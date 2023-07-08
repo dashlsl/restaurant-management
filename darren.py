@@ -14,7 +14,7 @@ def update():
         q += 1
         reservations = reservations.split("|")
         #is 2 because in the list 2 is the name of the reservation
-        if reservation[2] == name:
+        if reservations[2] == name:
             reservations.append(reservations)
             numFound.append[q]
     
