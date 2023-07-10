@@ -71,7 +71,7 @@ def add_reservation():
         else:
             print("Reservation not confirmed, please try again")
 
-    return
+    return resDetails
 
 
 def cancel_reservation():
@@ -85,38 +85,38 @@ def edit_reservation():
     numFound = []
 
     q = 0
-    #to append new reservation into the list
+    # to append new reservation into the list
     for reservations in reserve:
         q += 1
         reservations = reservations.split("|")
-        #is 2 because in the list 2 is the name of the reservation
+        # is 2 because in the list 2 is the name of the reservation
         if reservations[2] == name:
             reservations.append(reservations)
             numFound.append[q]
     
-    #to check if reservations found or not found
-    #to furthur edit the reservation if reservation is found
+    # to check if reservations found or not found
+    # to further edit the reservation if reservation is found
     if len(reservationFound) >= 1:
         print(f"Reservation found.")
-        #emumerate is used to access both the index and the item of a sequence simultaneously
+        # enumerate is used to access both the index and the item of a sequence simultaneously
         for i, index in enumerate(numFound):
             print(f"[{q + 1}] {reserve[index - 1]}")
 
-        #to let user choose the reseravation that they want to update by looking at the index
+        # to let user choose the reservation that they want to update by looking at the index
         numChosen = int(input("Enter the number of the reservation to update: "))
 
-        #to check errors
+        # to check errors
         while not numChosen.isnumeric() or not (1 <= int(numChosen) <= len(reservationFound)):
             print("Error, please input your number again.")
             numChosen = int(input("Enter the number of the reservation to update: "))
     
-        #to change the date of the reservations
+        # to change the date of the reservations
         dateReplace = input("Enter the new date of the reservation (DD-MM-YYYY): ")
         dateNew = datetime.datetime.strptime(dateReplace, '%d-%m-%Y').date()
         dateToday = dateNew - dateNow
         day = dateToday.days
         
-        #to let user change the date of reservations because the date chosen is less than 5 days
+        # to let user change the date of reservations because the date chosen is less than 5 days
         while day < 5:
             print(f"Error! Please make reservations at least 5 days in advance.\n")
             dateReplace = input(f"Select a date (dd-mm-yyyy): ")
@@ -131,7 +131,7 @@ def edit_reservation():
     else:
         print(f"Reservation not found!")
 
-# Timonthy if u not using reserve and dateNow as ur variable pls tell me
+# Timothy if u not using reserve and dateNow as ur variable pls tell me
 # so i can change it according to yours
 
 
