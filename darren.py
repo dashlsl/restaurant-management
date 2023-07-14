@@ -1,8 +1,6 @@
 #update/edit reservation
-with open("reservation_21094230.txt", "r+") as f:
-    contents = f.readlines()
-
-def update():
+import datetime
+def edit_reservation():
     name = input("Enter your name for the reservation: ").upper()
     reservationFound = []
     reservationSelect = []
@@ -12,8 +10,9 @@ def update():
     # to append new reservation into the list
     for reservations in reserve:
         q += 1
+        # the line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
         reservations = reservations.split("|")
-        #is 2 because in the list 2 is the name of the reservation
+        # is 2 because in the list 2 is the name of the reservation
         if reservations[2] == name:
             reservations.append(reservations)
             numFound.append[q]
@@ -22,21 +21,22 @@ def update():
     # to furthur edit the reservation if reservation is found
     if len(reservationFound) >= 1:
         print(f"Reservation found.")
-        #emumerate is used to access both the index and the item of a sequence simultaneously
+        #emumerate() is used to access both the index and the item of a sequence simultaneously
         for i, index in enumerate(numFound):
             print(f"[{q + 1}] {reserve[index - 1]}")
 
-        #to let user choose the reseravation that they want to update by looking at the index
-        numChosen = int(input("Enter the number of the reservation to update: "))
+        # to let user choose the reseravation that they want to update by looking at the index
+        numUpdate = int(input("Enter the number of the reservation to update: "))
 
-        #to check errors
-        while not numChosen.isnumeric() or not (1 <= int(numChosen) <= len(reservationFound)):
+        # to check errors
+        # isnumeric() is used to check if the input consists of only numeric characters.
+        while not numUpdate.isnumeric() or not (1 <= int(numUpdate) <= len(reservationFound)):
             print("Error, please input your number again.")
-            numChosen = int(input("Enter the number of the reservation to update: "))
+            numUpdate = int(input("Enter the number of the reservation to update: "))
     
         # to change the date of the reservations
         dateReplace = input("Enter the new date of the reservation (DD-MM-YYYY): ")
-        dateNew = datetime.datetime.strptime(dateReplace, '%d-%m-%Y').date()
+        dateNew = datetime.strptime(dateReplace, '%d-%m-%Y').date()
         dateToday = dateNew - dateNow
         day = dateToday.days
         
@@ -53,7 +53,4 @@ def update():
             f"\n[3] 06.00pm - 08.00pm"
             f"\n[4] 08.00pm - 10.00pm")
     else:
-        print(f"Reservation not found!")
-
-# Timothy if u not using reserve and dateNow as ur variable pls tell me
-# so i can change it according to yours
+        print(f"Reservation not found! Please check again")
