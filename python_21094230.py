@@ -136,7 +136,7 @@ def edit_reservation():
         # To change the date of the reservations
         dateReplace = input("Enter the new date for the chosen reservation (YYYY-MM-DD): ")
         dateNew = datetime.strptime(dateReplace, '%Y-%m-%d').date()
-        dateToday = dateNew - date
+        dateToday = dateNew - resDetails[0]
         day = dateToday.days
         
         # To let user change the date of reservations because the date chosen is less than 5 days
@@ -144,7 +144,7 @@ def edit_reservation():
             print(f"Sorry but reservation needs to be booked 5 days in advance.\n")
             dateReplace = input(f"Select another date (YYYY-MM-DD): ")
             dateNew = datetime.strptime(dateNew, '%Y-%m-%d').date()
-            dateToday = dateNew - date
+            dateToday = dateNew - resDetails[0]
             day = dateToday.days
 
         print(f"[1] 12.00pm - 2.00pm"
