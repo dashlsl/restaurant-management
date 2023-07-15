@@ -3,7 +3,7 @@ import datetime
 import os
 
 # Opens file containing reservation information
-with open("reservation_21094230.txt", "r+") as f:
+with open("reservation_21094230.txt", "r") as f:
     resDetails = f.readlines()
 
 # Opens file containing list of menu items
@@ -35,42 +35,63 @@ def main_program():
             case 5:
                 meal_recommendation()
             case 6:
-                print("Program closed")
+                print("Saving details and closing program... ")
+                with open("reservation_21094230.txt", "w") as rewrite:
+                    rewrite.writelines(resDetails)
+                print("Details saved successfully, program closed!")
                 retry = False
             case _:
                 print("Please try again with a valid response (1-6)\n")
 
 
 def add_reservation():
+    clash = []  # List showing all reservations occupying the same date and slot
+
     retry = True
     while retry:
         print(f"Adding new reservation... ")
 
-        # Inputting reservation information
+        # Receive input for date and slot to reserve
         date = input("Enter date of reservation (YYYY-MM-DD): ")
-        slot = int(input("Enter slot to reserve (1-4 only): "))
-        name = input("Enter name for reservation: ")
-        email = input("Enter email for reservation: ")
-        phone = input("Enter phone number for reservation: ")
-        pax = int(input("Enter number of pax (maximum 4): "))
+        slot = input("Enter slot to reserve (1-4 only): ")
 
-        # Concatenating reservation details as a string
-        entry1 = f"{date}|Slot {slot}|{name}|{email}|{phone}|{pax}"
+        # Displays people that made reservations for the chosen slot
+        for reservation in resDetails:
+            info = reservation.split("|")
+            if info[0] == date and info[1][5] == slot:
+                clash.append(info)
+        print("\nThis slot was reserved by: ")
+        for i in clash:
+            print(i[2], end=", ")
+        print("\n")
 
-        # Confirming reservation details
-        print(f"Please reconfirm the reservation details: "
-              f"\n{entry1}"
-              f"\n")
-        confirm = input("Enter Y to confirm reservation: ")
-        if confirm.upper() == "Y":
-            resDetails.append(entry1)
-            """with open("reservation_21094230.txt", "a") as f:
-                f.write(f"{entry1}\n")"""
-            print("Reservation added! Returning to main menu...\n")
-            retry = False
-        else:
-            print("Reservation not confirmed, please try again")
+        # Checks if reservations slot is available or not
+        if len(clash) >= 8:  # Slot full
+            print("Slot can only accommodate 8 reservations, please choose a different slot \n")
+            clash = []  # Resets the clash list
+        else:  # Slot available
+            print("Slot is available, you may start entering details")
 
+            # Start taking reservation details
+            name = input("Enter name for reservation: ")
+            email = input("Enter email for reservation: ")
+            phone = input("Enter phone number for reservation: ")
+            pax = int(input("Enter number of pax (maximum 4): "))
+
+            # Concatenating reservation info as a string
+            entry1 = f"{date}|Slot {slot}|{name.upper()}|{email}|{phone}|{pax}\n"
+
+            # Confirming reservation info
+            print(f"Please reconfirm the reservation details: "
+                  f"\n{entry1}")
+            confirm = input("Enter Y to confirm reservation: ")
+            if confirm.upper() == "Y":
+                resDetails.append(entry1)
+                resDetails.sort()
+                print("Reservation added! Returning to main menu...\n")
+                retry = False
+            else:
+                print("Reservation not confirmed, please try again")
     return resDetails
 
 
