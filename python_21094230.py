@@ -102,12 +102,12 @@ def cancel_reservation():
 def edit_reservation():
     name = input("Enter your name for the reservation: ").upper()
     reservationFound = []
-    reservationSelect = []
+
     numFound = []
 
     q = 0
     # to append new reservation into the list
-    for reservations in reserve:
+    for reservations in resDetails:
         q += 1
         # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
         reservations = reservations.split("|")
@@ -122,7 +122,7 @@ def edit_reservation():
         print(f"Reservation found.")
         # Enumerate() is used to access both the index and the item of a sequence simultaneously
         for i, index in enumerate(numFound):
-            print(f"[{q + 1}] {reserve[index - 1]}")
+            print(f"[{q + 1}] {resDetails[index - 1]}")
 
         # To let user choose the reservation that they want to update by looking at the index
         numUpdate = int(input("Enter the number of the reservation to update: "))
@@ -134,17 +134,17 @@ def edit_reservation():
             numUpdate = int(input("Enter the number of the reservation to update: "))
     
         # To change the date of the reservations
-        dateReplace = input("Enter the new date of the reservation (DD-MM-YYYY): ")
-        dateNew = datetime.strptime(dateReplace, '%d-%m-%Y').date()
-        dateToday = dateNew - dateNow
+        dateReplace = input("Enter the new date for the chosen reservation (YYYY-MM-DD): ")
+        dateNew = datetime.strptime(dateReplace, '%Y-%m-%d').date()
+        dateToday = dateNew - date
         day = dateToday.days
         
         # To let user change the date of reservations because the date chosen is less than 5 days
         while day < 5:
-            print(f"Error! Please make reservations at least 5 days in advance.\n")
-            dateReplace = input(f"Select a date (dd-mm-yyyy): ")
-            dateNew = datetime.strptime(dateNew, '%d-%m-%Y').date()
-            dateToday = dateNew - dateNow
+            print(f"Sorry but reservation needs to be booked 5 days in advance.\n")
+            dateReplace = input(f"Select another date (YYYY-MM-DD): ")
+            dateNew = datetime.strptime(dateNew, '%Y-%m-%d').date()
+            dateToday = dateNew - date
             day = dateToday.days
 
         print(f"[1] 12.00pm - 2.00pm"
