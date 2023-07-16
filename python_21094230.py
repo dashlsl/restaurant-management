@@ -53,12 +53,17 @@ def add_reservation():
 
         # Receive input for date and slot to reserve
         date = input("Enter date of reservation (YYYY-MM-DD): ")
-        slot = input("Enter slot to reserve (1-4 only): ")
+        slot = 0
+        while slot == 0:
+            slot = int(input("Enter slot to reserve (1-4 only): "))
+            if slot < 1 or slot > 4:
+                print("\nInvalid slot, please try again")
+                slot = int(input("Enter slot to reserve (1-4 only): "))
 
         # Displays people that made reservations for the chosen slot
         for reservation in resDetails:
             info = reservation.split("|")
-            if info[0] == date and info[1][5] == slot:
+            if info[0] == date and info[1][5] == str(slot):
                 clash.append(info)
         print("\nThis slot was reserved by: ")
         for i in clash:
@@ -76,7 +81,12 @@ def add_reservation():
             name = input("Enter name for reservation: ")
             email = input("Enter email for reservation: ")
             phone = input("Enter phone number for reservation: ")
-            pax = int(input("Enter number of pax (maximum 4): "))
+            pax = 0
+            while pax == 0:
+                pax = int(input("Enter number of pax (maximum 4): "))
+                if pax < 1 or pax > 4:
+                    print("\nInvalid number of pax, please try again")
+                    pax = int(input("Enter number of pax (maximum 4): "))
 
             # Concatenating reservation info as a string
             entry1 = f"{date}|Slot {slot}|{name.upper()}|{email}|{phone}|{pax}\n"
@@ -91,7 +101,7 @@ def add_reservation():
                 print("Reservation added! Returning to main menu...\n")
                 retry = False
             else:
-                print("Reservation not confirmed, please try again")
+                print("Reservation not confirmed, please try again\n")
     return resDetails
 
 
