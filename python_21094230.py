@@ -98,10 +98,12 @@ def add_reservation():
             if confirm.upper() == "Y":
                 resDetails.append(entry1)
                 resDetails.sort()
-                print("Reservation added! Returning to main menu...\n")
+                print("Reservation added! Returning to main menu...")
+                print("\n")
                 retry = False
             else:
-                print("Reservation not confirmed, please try again\n")
+                print("Reservation not confirmed, please try again")
+                print("\n")
     return resDetails
 
 
@@ -166,25 +168,25 @@ def edit_reservation():
 
 
 def display_reservation():
-    #Define column widths and headers
+    # Define column widths and headers
     columnWidths = [12, 8, 20, 30, 12, 8]
     headers = ["Date", "Slot", "Name", "Email", "Phone", "Number of Pax"]
 
-    #Create header row
+    # Create header row
     headerRow = " | ".join(f"{header:<{width}}" for header, width in zip(headers, columnWidths))
-    #Create dash line
+    # Create dash line
     dashLine = "-" * len(headerRow)
 
-    #Print headers and dash line
+    # Print headers and dash line
     print(headerRow)
     print(dashLine)
 
-    #Iterate over each line in the reservation details text file
+    # Iterate over each line in the reservation details text file
     for line in resDetails:
-        #Split the line by '|' to extract the reservation information
+        # Split the line by '|' to extract the reservation information
         reservation = line.strip().split("|")
 
-        #Extract the reservation details
+        # Extract the reservation details
         date = reservation[0]
         slot = reservation[1]
         name = reservation[2]
@@ -192,14 +194,16 @@ def display_reservation():
         phone = reservation[4]
         pax = reservation[5]
 
-        #Print the reservation details in the given format
+        # Print the reservation details in the given format
         print(" | ".join(f"{detail:<{width}}" for detail, width in zip([date, slot, name, email, phone, pax], columnWidths)))
+
+    print("\n")
 
 
 def meal_recommendation():
-    #Asks for number of recommendations user would like
+    # Asks for number of recommendations user would like
     numRecommendation = int(input("How many menu recommendations do you want? (Choose 1-5): "))
-    #Default number recommendation if input is not in range 1-5
+    # Default number recommendation if input is not in range 1-5
     if numRecommendation < 1:
         numRecommendation = 1
         print("Invalid value. Defaulted to 1.")
@@ -207,14 +211,17 @@ def meal_recommendation():
         numRecommendation = 5
         print("Invalid value. Defaulted to 5.")
 
-    #Generates recommendations
+    # Generates recommendations
     print("Recommendations:")
     recommendationList = []
-    #Generates recommendations up to the number the user has chosen
+    # Generates recommendations up to the number the user has chosen
     while len(recommendationList) < numRecommendation:
         recommendation = random.choice(menuItems)
-        if recommendation not in recommendationList: #Avoids duplicate recommendations
+        if recommendation not in recommendationList:  # Avoids duplicate recommendations
             recommendationList.append(recommendation)
-            print(f"- {recommendation}")
+            print(f"- {recommendation}", end="")
+
+    print("\n")
+
 
 main_program()
