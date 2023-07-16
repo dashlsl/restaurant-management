@@ -156,11 +156,50 @@ def edit_reservation():
 
 
 def display_reservation():
-    print("den nuts")
+    # Define the width for each column
+    columnWidths = [12, 8, 20, 30, 12, 8]
+
+    # Print the headers
+    headers = ["Date", "Slot", "Name", "Email", "Phone", "Number of Pax"]
+    print(" | ".join(f"{header:<{width}}" for header, width in zip(headers, columnWidths)))
+    print("-" * (sum(columnWidths) + len(columnWidths)))
+
+    # Iterate over each line in the file
+    for line in resDetails:
+        # Split the line by '|' to extract the reservation information
+        reservation = line.strip().split("|")
+
+        # Extract the reservation details
+        date = reservation[0]
+        slot = reservation[1]
+        name = reservation[2]
+        email = reservation[3]
+        phone = reservation[4]
+        pax = reservation[5]
+
+        # Print the reservation details using the fixed-width format
+        print(" | ".join(f"{detail:<{width}}" for detail, width in zip([date, slot, name, email, phone, pax], columnWidths)))
 
 
 def meal_recommendation():
-    print("now nuts")
+    #Asks for number of recommendations user would like
+    numRecommendation = int(input("How many menu recommendations do you want? (Choose 1-5): "))
+    #Default number recommendation if input is not in range 1-5
+    if numRecommendation < 1:
+        numRecommendation = 1
+        print("Invalid value. Defaulted to 1.")
+    elif numRecommendation > 5:
+        numRecommendation = 5
+        print("Invalid value. Defaulted to 5.")
 
+    #Generates recommendations
+    print("Recommendations:")
+    recommendationList = []
+    #Generates recommendations up to the number the user has chosen
+    while len(recommendationList) < numRecommendation:
+        recommendation = random.choice(menuItems)
+        if recommendation not in recommendationList: #Avoids duplicate recommendations
+            recommendationList.append(recommendation)
+            print(f"- {recommendation}")
 
 main_program()
