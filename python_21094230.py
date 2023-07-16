@@ -166,20 +166,25 @@ def edit_reservation():
 
 
 def display_reservation():
-    # Define the width for each column
+    #Define column widths and headers
     columnWidths = [12, 8, 20, 30, 12, 8]
-
-    # Print the headers
     headers = ["Date", "Slot", "Name", "Email", "Phone", "Number of Pax"]
-    print(" | ".join(f"{header:<{width}}" for header, width in zip(headers, columnWidths)))
-    print("-" * (sum(columnWidths) + len(columnWidths)))
 
-    # Iterate over each line in the file
+    #Create header row
+    headerRow = " | ".join(f"{header:<{width}}" for header, width in zip(headers, columnWidths))
+    #Create dash line
+    dashLine = "-" * len(headerRow)
+
+    #Print headers and dash line
+    print(headerRow)
+    print(dashLine)
+
+    #Iterate over each line in the reservation details text file
     for line in resDetails:
-        # Split the line by '|' to extract the reservation information
+        #Split the line by '|' to extract the reservation information
         reservation = line.strip().split("|")
 
-        # Extract the reservation details
+        #Extract the reservation details
         date = reservation[0]
         slot = reservation[1]
         name = reservation[2]
@@ -187,7 +192,7 @@ def display_reservation():
         phone = reservation[4]
         pax = reservation[5]
 
-        # Print the reservation details using the fixed-width format
+        #Print the reservation details in the given format
         print(" | ".join(f"{detail:<{width}}" for detail, width in zip([date, slot, name, email, phone, pax], columnWidths)))
 
 
