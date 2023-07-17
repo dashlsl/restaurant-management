@@ -159,9 +159,11 @@ def cancel_reservation():
         elif confirm=="N":
             print("Reservation Not Deleted.")
 
-
+########################################################################################################
 def edit_reservation():
     name = input("Enter your name for the reservation: ").upper()
+    slot = input("Enter your slot for the reservation: ")
+
     q = 0
     reservationFound = []
     numFound = []
@@ -172,7 +174,7 @@ def edit_reservation():
         # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
         reserve = reservations.split("|")
         # Is 2 because in the list 2 is the name of the reservation
-        if reserve[2] == name:
+        if reserve[2] == name and reserve[1] == slot:
             reservationFound.append(reserve)
             date1,slot,name,email,phone,pax = reserve
             numFound.append(q)
@@ -212,15 +214,17 @@ def edit_reservation():
             dateToday = dateNew - dateOld
             day = dateToday.days
 
-        timeChosen = input(print(f"[1] 12.00pm - 2.00pm"
+        slotNew = input(print(f"[1] 12.00pm - 2.00pm"
               f"\n[2] 02.00pm - 04.00pm"
               f"\n[3] 06.00pm - 08.00pm"
               f"\n[4] 08.00pm - 10.00pm"))
-        print(timeChosen)
+        print (slotNew)
+        print ("-------------------------------------------------------------------------------------------------------------------------3")
         
     else:
         print(f"Reservation not found! Please check again")
 
+######################################################################################################
 
 def display_reservation():
     # Define column widths and headers
