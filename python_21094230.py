@@ -162,7 +162,7 @@ def cancel_reservation():
 ########################################################################################################
 def edit_reservation():
     name = input("Enter your name for the reservation: ").upper()
-    slot = input("Enter your slot for the reservation: ")
+    slot = input("Enter your slot for the reservation (Slot X?): ")
 
     q = 0
     reservationFound = []
@@ -186,6 +186,8 @@ def edit_reservation():
         # Enumerate() is used to access both the index and the item of a sequence simultaneously
         for q, numFound in enumerate(numFound):
             print(f"[{q + 1}] {resDetails[numFound - 1]}")
+            q += 1
+            
 
         # To let user choose the reservation that they want to update by looking at the index
         numUpdate = (input("Enter the number of the reservation to update: "))
@@ -197,32 +199,56 @@ def edit_reservation():
             numUpdate = int(input("Enter the number of the reservation to update: "))
     
         # To change the date of the reservations
-        dateReplace = input("Enter the new date for the chosen reservation (YYYY-MM-DD): ")
-        dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
-        dateOld = datetime.datetime.strptime(date1, '%Y-%m-%d').date()
-        dateToday = dateNew - dateOld
-        day = dateToday.days
-        bitch = f"{dateNew}|Slot {slot}|{name.upper()}|{email}|{phone}|{pax}\n"
-        resDetails.append(bitch)
+        # To validate the date entered
+        loop = True
+        while loop == True:
+            try:
+                dateReplace = input("Enter the new date for the chosen reservation (YYYY-MM-DD): ")
+                if dateReplace != datetime.datetime.strptime(dateReplace, "%Y-%m-%d").strftime('%Y-%m-%d'):
+                        raise ValueError
+            except ValueError:
+                print (f"Fuck you you cannot read properly ah, babi go back to kindergarden lah BITCH!!!!!!!")
+            else:
+                dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
+                dateOld = datetime.datetime.strptime(date1, '%Y-%m-%d').date()
+                dateToday = dateNew - dateOld
+                day = dateToday.days
+                loop = False
         
-        
-        # To let user change the date of reservations because the date chosen is less than 5 days
-        while day >= 5:
-            print(f"Sorry but reservation needs to be booked 5 days in advance.\n")
+        # To let user change the date of reservations because the date chosen is more than 5 days or the the user went back in time
+        while day >= 5 or day < 0:
+            print(f"Sorry but reservation needs to be booked 5 days in advance or the date is invalid.\n")
             dateReplace = input(f"Select another date (YYYY-MM-DD): ")
             dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
             dateToday = dateNew - dateOld
             day = dateToday.days
 
-        slotNew = input(print(f"[1] 12.00pm - 2.00pm"
-              f"\n[2] 02.00pm - 04.00pm"
-              f"\n[3] 06.00pm - 08.00pm"
-              f"\n[4] 08.00pm - 10.00pm"))
-        print (slotNew)
+        # To let user choose another time slot
+        # To validate whether the chosen time slot is within the range
+        repeat = True
+        while repeat:
+            print("[1] 12.00pm - 2.00pm"
+                ,"\n[2] 02.00pm - 04.00pm"
+                ,"\n[3] 06.00pm - 08.00pm"
+                ,"\n[4] 08.00pm - 10.00pm")
+            slotNew = int(input("Choose a new slot: "))
+            if slotNew >= 5 or slotNew <= 0:
+                print ("Please check again.")
+            else:
+                confirmation = input(f"Confirm?(Y/N): ").upper()
+                if confirmation == "N":
+                    print (f"Please choose again")
+                elif confirmation == "Y":
+                    editedDetails = f"{dateNew}|Slot {slotNew}|{name.upper()}|{email}|{phone}|{pax}\n"
+                    resDetails.append(editedDetails)
+                    repeat = False
+
+        print (f"Your reservation has been updated. Thank you!")
         print ("-------------------------------------------------------------------------------------------------------------------------3")
-        
+
     else:
         print(f"Reservation not found! Please check again")
+        
 
 ######################################################################################################
 
