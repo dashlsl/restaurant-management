@@ -108,7 +108,56 @@ def add_reservation():
 
 
 def cancel_reservation():
-    print("doze nuts")
+    user_input = input("Enter the name the reservation is under:").upper
+    # Search file for reservation with that name
+    num_result = []
+    q = 0
+    # to append new reservation into the list
+    for reservations in resDetails:
+        q += 1
+        # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
+        reservations = reservations.split("|")
+        # Is 2 because in the list 2 is the name of the reservation
+        if reservations[2] == name:
+            num_result.append[q]
+
+    # If search found exactly one result
+    if num_result==1:
+        print("Search Found!")
+        # Display Search
+        for i, index in enumerate(num_result):
+            print(f"[{q + 1}] {resDetails[index - 1]}")
+        # Ask for confirmation
+        confirm=input("Are you sure you want to delete this reservation? [Y/N]").upper()
+        if confirm=="Y":
+            # Delete Line which matches
+            del resDetails[num_result[0]]
+            print("Reservation Deleted.")
+
+        elif confirm=="N":
+            print("Reservation Not Deleted.")
+
+    # If search found more than one results
+    elif num_result>1:
+        print(str(num_result)+" Results Were Found!")
+        # Display Search
+        for i, index in enumerate(num_result):
+            count=1
+            print("["+str(count)+"] "+f"[{q + 1}] {resDetails[index - 1]}")
+            count+=1
+
+        # Ask which reservation to delete
+        choice=int(input(print("Which reservation would you like to delete?")))
+
+        # Ask for confirmation
+        confirm=input("Are you sure you want to delete this reservation? [Y/N]").upper()
+        if confirm=="Y":
+            # Delete Line which matches
+            del resDetails[num_result[choice-1]]
+            print("Reservation Deleted.")
+
+        elif confirm=="N":
+            print("Reservation Not Deleted.")
 
 
 def edit_reservation():
