@@ -108,7 +108,7 @@ def add_reservation():
 
 
 def cancel_reservation():
-    user_input = input("Enter the name the reservation is under:").upper
+    name = input("Enter the name the reservation is under:").upper
     # Search file for reservation with that name
     num_result = []
     q = 0
@@ -232,9 +232,12 @@ def edit_reservation():
                 ,"\n[3] 06.00pm - 08.00pm"
                 ,"\n[4] 08.00pm - 10.00pm")
             slotNew = int(input("Choose a new slot: "))
+            # To make sure that input is within 1 and 4
             if slotNew >= 5 or slotNew <= 0:
                 print ("Please check again.")
             else:
+                # Ask for a confirmation input to make sure that the user wants this slot
+                # To validate the confirmation
                 confirmation = input(f"Confirm?(Y/N): ").upper()
                 if confirmation == "N":
                     print (f"Please choose again")
