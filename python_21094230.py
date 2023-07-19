@@ -169,16 +169,17 @@ def add_reservation():
                 while new_res == 0:
                     new_res = int(input("Enter your selection: "))
                     if new_res == 1:
+                        print("Adding new reservation...")
                         retry = True
                     elif new_res == 2:
                         print("\n"
                               "Returning to main menu...")
-                        print("---------------------------------------------------------------------------------------")
                         retry = False
                     else:
                         print("\n"
                               "Invalid selection, please try again")
                         new_res = 0
+    print("-----------------------------------------------------------------------------------------------------------")
     return resDetails
 
 
@@ -187,7 +188,7 @@ def add_reservation():
 def cancel_reservation():
     loop = True
     while loop:
-        name = input("Enter the name the reservation is under:").upper()
+        name = input("Enter the name the reservation is under: ").upper()
         # Search file for reservation with that name
         num_result = []
         q = 0
@@ -204,32 +205,32 @@ def cancel_reservation():
 
         # If search found exactly one result
         if len(num_result) == 1:
-            print("Search Found!")
+            print("Search found!")
             # Display Search
             for i, index in enumerate(num_result):
                 print(f"[{1}] {resDetails[index]}")
             # Ask for confirmation
-            confirm = input("Are you sure you want to delete this reservation? [Y/N]").upper()
+            confirm = input("Are you sure you want to delete this reservation? [Y/N]: ").upper()
             if confirm == "Y":
                 # Delete Line which matches
                 del resDetails[num_result[0]]
-                print("Reservation Deleted.\n")
+                print("Reservation deleted.\n")
                 loop = False
 
             elif confirm == "N":
-                print("Reservation Not Deleted.\n")
+                print("Reservation not deleted.\n")
                 loop = False
             else:
-                print("Invalid Input\n")
+                print("Invalid input\n")
                 loop = False
 
         # If search found more than one results
         elif len(num_result) > 1:
-            print(str(num_result)+" Results Were Found!")
+            print(str(num_result) + " Results Were Found!")
             # Display Search
             for i, index in enumerate(num_result):
                 count = 1
-                print("["+str(count)+"] "+f"[{q + 1}] {resDetails[index - 1]}")
+                print("[" + str(count) + "] " + f"[{q + 1}] {resDetails[index - 1]}")
                 count += 1
 
             # Ask which reservation to delete
