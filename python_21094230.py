@@ -186,73 +186,122 @@ def add_reservation():
 ########################################################################################################
 
 def cancel_reservation():
-    loop = True
-    while loop:
-        name = input("Enter the name the reservation is under: ").upper()
-        # Search file for reservation with that name
-        num_result = []
-        q = 0
-        # to append new reservation into the list
+    try:
+        loop=True
+        while loop:
+            print("**Cancel Reservation**")
+            num=int(input("How many reservation do you want to delete?: "))
+            num_result = []
+            q = 0
 
-        for reservations in resDetails:
+            if num==1:
+                name = input("Enter the name the reservation is under:").upper()
+                # Search file for reservation with that name
+                # to append new reservation into the list
 
-            # Splits the reservations items using "|" as the separator and assigns the resulting split parts
-            temp = reservations.split("|")
-            # Is 2 because in the list 2 is the name of the reservation
-            if temp[2] == name:
-                num_result.append(q)
-            q += 1
+                for reservations in resDetails:
+                    # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
+                    temp = reservations.split("|")
+                    # Is 2 because in the list 2 is the name of the reservation
+                    if temp[2] == name:
+                        num_result.append(q)
+                    q += 1
 
-        # If search found exactly one result
-        if len(num_result) == 1:
-            print("Search found!")
-            # Display Search
-            for i, index in enumerate(num_result):
-                print(f"[{1}] {resDetails[index]}")
-            # Ask for confirmation
-            confirm = input("Are you sure you want to delete this reservation? [Y/N]: ").upper()
-            if confirm == "Y":
-                # Delete Line which matches
-                del resDetails[num_result[0]]
-                print("Reservation deleted.\n")
-                loop = False
+                # If search found exactly one result
+                if len(num_result) == 1:
+                    print("Search Found!")
+                    # Display Search
+                    for i, index in enumerate(num_result):
+                        print(f"[{1}] {resDetails[index]}")
+                    # Ask for confirmation
+                    confirm = input("Are you sure you want to delete this reservation? [Y/N]").upper()
+                    if confirm == "Y":
+                        # Delete Line which matches
+                        del resDetails[num_result[0]]
+                        print("Reservation Deleted.\n")
 
-            elif confirm == "N":
-                print("Reservation not deleted.\n")
-                loop = False
-            else:
-                print("Invalid input\n")
-                loop = False
 
-        # If search found more than one results
-        elif len(num_result) > 1:
-            print(str(num_result) + " Results Were Found!")
-            # Display Search
-            for i, index in enumerate(num_result):
+                    elif confirm == "N":
+                        print("Reservation Not Deleted.\n")
+
+                    else:
+                        print("Invalid Input\n")
+
+                # If search found more than one results
+                elif len(num_result) > 1:
+                    print(str(len(num_result))+" Results Were Found!")
+                    # Display Search
+                    count = 1
+                    for i, index in enumerate(num_result):
+                        print("["+str(count)+"] "+f" {resDetails[index]}")
+                        count += 1
+
+                    # Ask which reservation to delete
+                    choice = int(input("Which reservation would you like to delete?: "))
+
+                    # Ask for confirmation
+                    confirm = input("Are you sure you want to delete this reservation? [Y/N]").upper()
+                    if confirm == "Y":
+                        # Delete Line which matches
+                        del resDetails[num_result[choice-1]]
+                        print("Reservation Deleted.\n")
+
+                    elif confirm == "N":
+                        print("Reservation Not Deleted.\n")
+
+                    else:
+                        print("Invalid Input\n")
+
+                else:
+                    print("No Result were found\n")
+                loop=False
+
+            # If user wants to delete more than 1 reservation
+            elif num>1:
+                name_search=[]
+                num_result=[]
+                i = 0
+                q = 0
+
+                # Ask for name reservations is under
+                for x in range (num):
+                    name=input("["+str(x+1)+"]Enter the name the reservation is under:").upper()
+                    name_search.append(name)
+
+                # Search for reservation
+                for reservations in resDetails:
+                    # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
+                    temp = reservations.split("|")
+                    # Is 2 because in the list 2 is the name of the reservation
+                    for i in range (len(name_search)):
+                        if temp[2] == name_search[i]:
+                            num_result.append(q)
+                    q += 1
+
+                # Display Result found
                 count = 1
-                print("[" + str(count) + "] " + f"[{q + 1}] {resDetails[index - 1]}")
-                count += 1
+                for i, index in enumerate(num_result):
+                    print("[" + str(count) + "] " + f" {resDetails[index]}")
+                    count += 1
 
-            # Ask which reservation to delete
-            choice = int(input(print("Which reservation would you like to delete?")))
+                # Ask for confirmation
+                confirm=input("Are you sure you want to delete these reservation? [Y/N]: ").upper()
+                if confirm == "Y":
+                    # Delete Lines which matches
+                    for i in range (len(num_result)):
+                        del resDetails[num_result[i]]
+                    print("Reservations Deleted.\n")
 
-            # Ask for confirmation
-            confirm = input("Are you sure you want to delete this reservation? [Y/N]").upper()
-            if confirm == "Y":
-                # Delete Line which matches
-                del resDetails[num_result[choice-1]]
-                print("Reservation Deleted.\n")
-                loop = False
+                elif confirm == "N":
+                    print("Reservations Not Deleted.\n")
 
-            elif confirm == "N":
-                print("Reservation Not Deleted.\n")
-                loop = False
-            else:
-                print("Invalid Input\n")
-                loop = False
-        else:
-            print("No Result were found\n")
-            loop = False
+                else:
+                    print("Invalid Input\n")
+                loop=False
+
+    # Ask user to try again in error happen
+    except:
+        print("Invalid Input, Try Again.\n")
     print("------------------------------------------------------------------------------------------------------")
 
 
