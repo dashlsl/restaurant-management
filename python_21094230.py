@@ -47,65 +47,137 @@ def main_program():
 ########################################################################################################
 
 def add_reservation():
-    clash = []  # List showing all reservations occupying the same date and slot
+    print(f"Adding new reservation... "
+          f"\nNote: Reservation must be at least 5 days in advance")
 
     retry = True
     while retry:
-        print(f"Adding new reservation... ")
+        # Receives and checks date input
+        date_now = datetime.datetime.now().date()
+        date_res = ""
+        while date_res == "":
+            try:
+                date_res = input("Enter date of reservation (YYYY-MM-DD): ")
+                if date_res != datetime.datetime.strptime(date_res, "%Y-%m-%d").strftime('%Y-%m-%d'):
+                    raise ValueError
+            except ValueError:
+                print("\n"
+                      "Invalid date format, please try again")
+                date_res = ""
+            else:
+                date_res = datetime.datetime.strptime(date_res, "%Y-%m-%d").date()
+                days_between = date_res - date_now
+                # Checks whether reservation is at least 5 days in advance
+                if days_between.days < 5:
+                    print(f"\n"
+                          f"Reservation must be at least 5 days in advance, please try again")
+                    date_res = ""
+                else:
+                    print("")
+                    confirm_date = input(f"Enter 'Y' to confirm the date {date_res}: ").upper()
+                    if confirm_date == "Y":
+                        print("\n"
+                              "Reservation date set!")
+                    else:
+                        print("\n"
+                              "Choosing a different date...")
+                        date_res = ""
 
-        # Receive input for date and slot to reserve
-        date = input("Enter date of reservation (YYYY-MM-DD): ")
+        # Receives and checks slot input
         slot = 0
         while slot == 0:
+            print("[1] 12:00pm - 02:00pm"
+                  "\n[2] 02:00pm - 04:00pm"
+                  "\n[3] 06:00pm - 08:00pm"
+                  "\n[4] 08:00pm - 10:00pm")
             slot = int(input("Enter slot to reserve (1-4 only): "))
             if slot < 1 or slot > 4:
                 print("\nInvalid slot, please try again")
                 slot = int(input("Enter slot to reserve (1-4 only): "))
 
-        # Displays people that made reservations for the chosen slot
-        for reservation in resDetails:
-            info = reservation.split("|")
-            if info[0] == date and info[1][5] == str(slot):
-                clash.append(info)
-        print("\nThis slot was reserved by: ")
-        for i in clash:
-            print(i[2], end=", ")
-        print("\n")
-
-        # Checks if reservations slot is available or not
-        if len(clash) >= 8:  # Slot full
-            print("Slot can only accommodate 8 reservations, please choose a different slot \n")
-            clash = []  # Resets the clash list
-        else:  # Slot available
-            print("Slot is available, you may start entering details")
-
-            # Start taking reservation details
-            name = input("Enter name for reservation: ")
-            email = input("Enter email for reservation: ")
-            phone = input("Enter phone number for reservation: ")
-            pax = 0
-            while pax == 0:
-                pax = int(input("Enter number of pax (maximum 4): "))
-                if pax < 1 or pax > 4:
-                    print("\nInvalid number of pax, please try again")
-                    pax = int(input("Enter number of pax (maximum 4): "))
-
-            # Concatenating reservation info as a string
-            entry1 = f"{date}|Slot {slot}|{name.upper()}|{email}|{phone}|{pax}\n"
-
-            # Confirming reservation info
-            print(f"Please reconfirm the reservation details: "
-                  f"\n{entry1}")
-            confirm = input("Enter Y to confirm reservation: ")
-            if confirm.upper() == "Y":
-                resDetails.append(entry1)
-                resDetails.sort()
-                print("Reservation added! Returning to main menu...")
-                print("\n")
-                retry = False
+            # Displays people that made reservations for the chosen slot
+            clash = []
+            for reservation in resDetails:
+                info = reservation.split("|")
+                if info[0] == str(date_res) and info[1][5] == str(slot):
+                    clash.append(info)
+            print("\n"
+                  "This slot was reserved by: ")
+            if not clash:
+                print("N/A")
             else:
-                print("Reservation not confirmed, please try again")
-                print("\n")
+                for i in clash:
+                    print(i[2], end=", ")
+                print(" ")
+
+            # Checks if reservation slot is available or not
+            if len(clash) >= 8:  # Slot full
+                print("Slot can only accommodate 8 reservations, please choose a different slot"
+                      "\n[1] Change date"
+                      "\n[2] Change slot")
+                clash.clear()  # Resets the clash list
+                changer = 0
+                while changer == 0:
+                    changer = int(input("Enter your selection: "))
+                    if changer == 1:
+                        print("\n"
+                              "Choosing a different date...")
+                        retry = True  # Re-trigger the loops to enter date and slot again
+                    elif changer == 2:
+                        print("\n"
+                              "Choosing a different slot...")
+                        slot = 0
+                    else:
+                        print("\n"
+                              "Invalid selection, please try again")
+                        changer = 0
+            else:  # Slot available
+                print("Slot is available, you may start entering details"
+                      "\n")
+
+                # Start taking reservation details
+                name = input("Enter name for reservation: ").upper()
+                email = input("Enter email for reservation: ")
+                phone = input("Enter phone number for reservation: ")
+                pax = 0
+                while pax == 0:
+                    pax = int(input("Enter number of pax (maximum 4): "))
+                    if pax < 1 or pax > 4:
+                        print("\nInvalid number of pax, please try again")
+                        pax = int(input("Enter number of pax (maximum 4): "))
+
+                # Concatenating reservation info as a string
+                entry1 = f"{date_res}|Slot {slot}|{name}|{email}|{phone}|{pax}\n"
+
+                # Confirming reservation info
+                print(f"Please reconfirm the reservation details: "
+                      f"\n{entry1}")
+                confirm = input("Enter Y to confirm reservation: ")
+                if confirm.upper() == "Y":
+                    resDetails.append(entry1)
+                    resDetails.sort()
+                    print("Reservation added!"
+                          "\n")
+                else:
+                    print("Reservation not confirmed, please try again"
+                          "\n")
+
+                # Checks if user wants to add another reservation
+                print("[1] Add another reservation"
+                      "\n[2] Return to main menu")
+                new_res = 0
+                while new_res == 0:
+                    new_res = int(input("Enter your selection: "))
+                    if new_res == 1:
+                        retry = True
+                    elif new_res == 2:
+                        print("\n"
+                              "Returning to main menu...")
+                        retry = False
+                    else:
+                        print("\n"
+                              "Invalid selection, please try again")
+                        new_res = 0
     return resDetails
 
 
@@ -122,7 +194,7 @@ def cancel_reservation():
 
         for reservations in resDetails:
 
-            # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
+            # The line splits the reservations item using "|" as the separator and assigns the resulting split parts to the reservation variable
             temp = reservations.split("|")
             # Is 2 because in the list 2 is the name of the reservation
             if temp[2] == name:
@@ -194,7 +266,7 @@ def edit_reservation():
     # to append new reservation into the list
     for reservations in resDetails:
         q += 1
-        # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
+        # The line splits the reservations item using "|" as the separator and assigns the resulting split parts to the reservation variable
         reserve = reservations.split("|")
         # Is 2 because in the list 2 is the name of the reservation
         if reserve[2] == name and reserve[1] == slot:
@@ -269,7 +341,7 @@ def edit_reservation():
                     repeat = False
 
         print(f"Your reservation has been updated. Thank you!")
-        print("-------------------------------------------------------------------------------------------------------------------------3")
+        print("------------------------------------------------------------------------------------------------------")
 
     else:
         print(f"Reservation not found! Please check again")
