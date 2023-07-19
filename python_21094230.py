@@ -108,7 +108,7 @@ def add_reservation():
 
 
 def cancel_reservation():
-    loop=True
+    loop = True
     while loop:
         name = input("Enter the name the reservation is under:").upper()
         # Search file for reservation with that name
@@ -123,58 +123,59 @@ def cancel_reservation():
             # Is 2 because in the list 2 is the name of the reservation
             if temp[2] == name:
                 num_result.append(q)
-            q+=1
+            q += 1
 
         # If search found exactly one result
-        if len(num_result)==1:
+        if len(num_result) == 1:
             print("Search Found!")
             # Display Search
             for i, index in enumerate(num_result):
                 print(f"[{1}] {resDetails[index]}")
             # Ask for confirmation
-            confirm=input("Are you sure you want to delete this reservation? [Y/N]").upper()
-            if confirm=="Y":
+            confirm = input("Are you sure you want to delete this reservation? [Y/N]").upper()
+            if confirm == "Y":
                 # Delete Line which matches
                 del resDetails[num_result[0]]
                 print("Reservation Deleted.\n")
                 loop = False
 
-            elif confirm=="N":
+            elif confirm == "N":
                 print("Reservation Not Deleted.\n")
                 loop = False
             else:
                 print("Invalid Input\n")
-                loop=False
+                loop = False
 
         # If search found more than one results
-        elif len(num_result)>1:
+        elif len(num_result) > 1:
             print(str(num_result)+" Results Were Found!")
             # Display Search
             for i, index in enumerate(num_result):
-                count=1
+                count = 1
                 print("["+str(count)+"] "+f"[{q + 1}] {resDetails[index - 1]}")
-                count+=1
+                count += 1
 
             # Ask which reservation to delete
-            choice=int(input(print("Which reservation would you like to delete?")))
+            choice = int(input(print("Which reservation would you like to delete?")))
 
             # Ask for confirmation
-            confirm=input("Are you sure you want to delete this reservation? [Y/N]").upper()
-            if confirm=="Y":
+            confirm = input("Are you sure you want to delete this reservation? [Y/N]").upper()
+            if confirm == "Y":
                 # Delete Line which matches
                 del resDetails[num_result[choice-1]]
                 print("Reservation Deleted.\n")
                 loop = False
 
-            elif confirm=="N":
+            elif confirm == "N":
                 print("Reservation Not Deleted.\n")
-                loop=False
+                loop = False
             else:
                 print("Invalid Input\n")
-                loop=False
+                loop = False
         else:
             print("No Result were found\n")
-            loop=False
+            loop = False
+
 
 ########################################################################################################
 def edit_reservation():
@@ -193,7 +194,7 @@ def edit_reservation():
         # Is 2 because in the list 2 is the name of the reservation
         if reserve[2] == name and reserve[1] == slot:
             reservationFound.append(reserve)
-            date1,slot,name,email,phone,pax = reserve
+            date1, slot, name, email, phone, pax = reserve
             numFound.append(q)
     
     # To check if reservations found or not found
@@ -204,7 +205,6 @@ def edit_reservation():
         for q, numFound in enumerate(numFound):
             print(f"[{q + 1}] {resDetails[numFound - 1]}")
             q += 1
-            
 
         # To let user choose the reservation that they want to update by looking at the index
         numUpdate = (input("Enter the number of the reservation to update: "))
@@ -218,13 +218,13 @@ def edit_reservation():
         # To change the date of the reservations
         # To validate the date entered
         loop = True
-        while loop == True:
+        while loop:
             try:
                 dateReplace = input("Enter the new date for the chosen reservation (YYYY-MM-DD): ")
                 if dateReplace != datetime.datetime.strptime(dateReplace, "%Y-%m-%d").strftime('%Y-%m-%d'):
-                        raise ValueError
+                    raise ValueError
             except ValueError:
-                print (f"Fuck you you cannot read properly ah, babi go back to kindergarden lah BITCH!!!!!!!")
+                print(f"Fuck you you cannot read properly ah, babi go back to kindergarten lah BITCH!!!!!!!")
             else:
                 dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
                 dateOld = datetime.datetime.strptime(date1, '%Y-%m-%d').date()
@@ -232,7 +232,7 @@ def edit_reservation():
                 day = dateToday.days
                 loop = False
         
-        # To let user change the date of reservations because the date chosen is more than 5 days or the the user went back in time
+        # To let user change the date of reservations because the date chosen is >5 days or the user went back in time
         while day >= 5 or day < 0:
             print(f"Sorry but reservation needs to be booked 5 days in advance or the date is invalid.\n")
             dateReplace = input(f"Select another date (YYYY-MM-DD): ")
@@ -244,27 +244,27 @@ def edit_reservation():
         # To validate whether the chosen time slot is within the range
         repeat = True
         while repeat:
-            print("[1] 12.00pm - 2.00pm"
-                ,"\n[2] 02.00pm - 04.00pm"
-                ,"\n[3] 06.00pm - 08.00pm"
-                ,"\n[4] 08.00pm - 10.00pm")
+            print("[1] 12.00pm - 2.00pm",
+                  "\n[2] 02.00pm - 04.00pm",
+                  "\n[3] 06.00pm - 08.00pm",
+                  "\n[4] 08.00pm - 10.00pm")
             slotNew = int(input("Choose a new slot: "))
             # To make sure that input is within 1 and 4
             if slotNew >= 5 or slotNew <= 0:
-                print ("Please check again.")
+                print("Please check again.")
             else:
                 # Ask for a confirmation input to make sure that the user wants this slot
                 # To validate the confirmation
                 confirmation = input(f"Confirm?(Y/N): ").upper()
                 if confirmation == "N":
-                    print (f"Please choose again")
+                    print(f"Please choose again")
                 elif confirmation == "Y":
                     editedDetails = f"{dateNew}|Slot {slotNew}|{name.upper()}|{email}|{phone}|{pax}\n"
                     resDetails.append(editedDetails)
                     repeat = False
 
-        print (f"Your reservation has been updated. Thank you!")
-        print ("-------------------------------------------------------------------------------------------------------------------------3")
+        print(f"Your reservation has been updated. Thank you!")
+        print("-------------------------------------------------------------------------------------------------------------------------3")
 
     else:
         print(f"Reservation not found! Please check again")
