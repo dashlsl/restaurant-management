@@ -44,6 +44,8 @@ def main_program():
                 print("Please try again with a valid response (1-6)\n")
 
 
+########################################################################################################
+
 def add_reservation():
     clash = []  # List showing all reservations occupying the same date and slot
 
@@ -106,6 +108,8 @@ def add_reservation():
                 print("\n")
     return resDetails
 
+
+########################################################################################################
 
 def cancel_reservation():
     loop = True
@@ -178,6 +182,7 @@ def cancel_reservation():
 
 
 ########################################################################################################
+
 def edit_reservation():
     name = input("Enter your name for the reservation: ").upper()
     slot = input("Enter your slot for the reservation (Slot X?): ")
@@ -270,7 +275,7 @@ def edit_reservation():
         print(f"Reservation not found! Please check again")
         
 
-######################################################################################################
+########################################################################################################
 
 def display_reservation():
     # Define column widths and headers
@@ -305,6 +310,8 @@ def display_reservation():
     print("\n")
 
 
+########################################################################################################
+
 def meal_recommendation():
     # Asks for number of recommendations user would like
     numRecommendation = int(input("How many menu recommendations do you want? (Choose 1-5): "))
@@ -328,5 +335,7 @@ def meal_recommendation():
 
     print("\n")
 
+
+########################################################################################################
 
 main_program()
