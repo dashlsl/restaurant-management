@@ -301,7 +301,7 @@ def edit_reservation():
                 if dateReplace != datetime.datetime.strptime(dateReplace, "%Y-%m-%d").strftime('%Y-%m-%d'):
                     raise ValueError
             except ValueError:
-                print(f"Fuck you you cannot read properly ah, babi go back to kindergarten lah BITCH!!!!!!!")
+                print(f"Invalid input, please try again!")
             else:
                 dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
                 dateOld = datetime.datetime.strptime(date1, '%Y-%m-%d').date()
