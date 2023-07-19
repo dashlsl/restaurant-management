@@ -173,6 +173,7 @@ def add_reservation():
                     elif new_res == 2:
                         print("\n"
                               "Returning to main menu...")
+                        print("---------------------------------------------------------------------------------------")
                         retry = False
                     else:
                         print("\n"
@@ -194,7 +195,7 @@ def cancel_reservation():
 
         for reservations in resDetails:
 
-            # The line splits the reservations item using "|" as the separator and assigns the resulting split parts to the reservation variable
+            # Splits the reservations items using "|" as the separator and assigns the resulting split parts
             temp = reservations.split("|")
             # Is 2 because in the list 2 is the name of the reservation
             if temp[2] == name:
@@ -251,6 +252,7 @@ def cancel_reservation():
         else:
             print("No Result were found\n")
             loop = False
+    print("------------------------------------------------------------------------------------------------------")
 
 
 ########################################################################################################
@@ -266,7 +268,7 @@ def edit_reservation():
     # to append new reservation into the list
     for reservations in resDetails:
         q += 1
-        # The line splits the reservations item using "|" as the separator and assigns the resulting split parts to the reservation variable
+        # Splits the reservations item using "|" as the separator and assigns the resulting split parts
         reserve = reservations.split("|")
         # Is 2 because in the list 2 is the name of the reservation
         if reserve[2] == name and reserve[1] == slot:
@@ -379,7 +381,7 @@ def display_reservation():
         # Print the reservation details in the given format
         print(" | ".join(f"{detail:<{width}}" for detail, width in zip([date, slot, name, email, phone, pax], columnWidths)))
 
-    print("\n")
+    print("------------------------------------------------------------------------------------------------------")
 
 
 ########################################################################################################
@@ -405,7 +407,7 @@ def meal_recommendation():
             recommendationList.append(recommendation)
             print(f"- {recommendation}", end="")
 
-    print("\n")
+    print("------------------------------------------------------------------------------------------------------")
 
 
 ########################################################################################################
