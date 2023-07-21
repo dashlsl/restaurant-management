@@ -260,7 +260,6 @@ def cancel_reservation():
             elif num>1:
                 name_search=[]
                 num_result=[]
-                i = 0
                 q = 0
 
                 # Ask for name reservations is under
