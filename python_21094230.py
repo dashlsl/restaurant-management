@@ -307,46 +307,19 @@ def cancel_reservation():
 ########################################################################################################
 
 def edit_reservation():
-    #Name input
+    # Name input
     name_res = input("Enter your name for the reservation: ").upper()
-    #Date input. Checks whether date in correct format
-    date_res = ""
-    while date_res == "":
-            try:
-                date_res = input("Enter your date for the reservation (YYYY-MM-DD): ")
-                if date_res != datetime.datetime.strptime(date_res, "%Y-%m-%d").strftime('%Y-%m-%d'):
-                    raise ValueError
-            except ValueError:
-                print("\n"
-                      "Invalid date format, please try again")
-                date_res = ""
-            else:
-                date_res = datetime.datetime.strptime(date_res, "%Y-%m-%d").date()
-    #Slot input.
-    slot_res = 0
-    while slot_res == 0:
-        print("[1] 12:00pm - 02:00pm"
-                "\n[2] 02:00pm - 04:00pm"
-                "\n[3] 06:00pm - 08:00pm"
-                "\n[4] 08:00pm - 10:00pm")
-        slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
-        if slot_res < 1 or slot_res > 4:
-            print("\nInvalid slot, please try again")
-            slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
-
     count = 0
     reservationFound = []
     numFound = []
 
-    # to append new reservation into the list
+    # To append new reservation into the list
     for reservations in resDetails:
         count += 1
         # Splits the reservations item using "|" as the separator and assigns the resulting split parts
         reserve = reservations.split("|")
         # Check if user inputs are in resDetails
-        if (reserve[2] == name_res 
-            and reserve[1][5] == str(slot_res) 
-            and datetime.datetime.strptime(reserve[0], "%Y-%m-%d").date() == date_res):
+        if (reserve[2] == name_res):
             reservationFound.append(reserve)
             date, slot, name, email, phone, pax = reserve
             numFound.append(count)
@@ -418,8 +391,9 @@ def edit_reservation():
                             dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
                             dateToday = dateNew - dateOld
                             day = dateToday.days
-                        
-                        #Confirm date
+                            
+                        # Ask for a confirmation input to make sure that the user wants to change to this new date
+                        # To validate the confirmation
                         userConfirmation = input(f"Your new date is {dateNew}. Would you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
                             checking = True
@@ -495,8 +469,9 @@ def edit_reservation():
                     oldName = True
                     while oldName:
                         nameNew = input("Enter the new name for the reservation: ").upper()
-
-                        userConfirmation = input(f"The new name is {nameNew}. Would you like to confirm? [Y/N]: ").upper()
+                        # Ask for a confirmation input to make sure that the user wants to change the reservation under this name
+                        # To validate the confirmation
+                        userConfirmation = input(f"The new name for this reservation is {nameNew}. Would you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
                             checking = True
                         elif userConfirmation == "Y":
@@ -507,8 +482,9 @@ def edit_reservation():
                     oldEmail = True
                     while oldEmail:
                         emailNew = input("Enter the email for the reservation: ").lower()
-
-                        userConfirmation = input(f"The new email is {emailNew}. Would you like to confirm? [Y/N]: ").upper()
+                        # Ask for a confirmation input to make sure that the user wants to change to this new email address
+                        # To validate the confirmation
+                        userConfirmation = input(f"The new email address is {emailNew}. Would you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
                             checking = True
                         elif userConfirmation == "Y":
@@ -519,7 +495,8 @@ def edit_reservation():
                     oldPhone = True
                     while oldPhone:
                         phoneNew = input("Enter the phone number for the reservation: ")
-
+                        # Ask for a confirmation input to make sure that the user wants to change to this new phone number
+                        # To validate the confirmation
                         userConfirmation = input(f"The new phone number is {phoneNew}. Would you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
                             checking = True
@@ -536,7 +513,8 @@ def edit_reservation():
                             if paxNew < 1 or paxNew > 4:
                                 print("\nInvalid number of pax, please try again")
                                 paxNew = int(input("Enter number of pax (maximum 4): "))
-
+                        # Ask for a confirmation input to make sure that the user wants this number of pax
+                        # To validate the confirmation
                         userConfirmation = input(f"The new number of pax is {paxNew}. Would you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
                             checking = True
@@ -549,7 +527,7 @@ def edit_reservation():
                     if len(reservationFound) >= numUpdate:
                         index_to_edit = numUpdate - 1
                         reservation_to_edit = resDetails[index_to_edit].split("|")
-
+                        # To append edited reservation details into a list
                         if dateNew is not None:
                             reservation_to_edit[0] = str(dateNew)
                         if slotNew is not None:
@@ -570,6 +548,7 @@ def edit_reservation():
                         if userConfirmation == "N":
                             final = True
                         elif userConfirmation == "Y":
+                            # To append the edited reservation details to the text file
                             resDetails[index_to_edit] = "|".join(reservation_to_edit)
                             print("Reservation successfully updated!")
                             final = False
