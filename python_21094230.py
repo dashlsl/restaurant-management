@@ -545,41 +545,36 @@ def edit_reservation():
 
                 # Exit editing
                 case 7:
-                    editedDetails = ""  # Initialize the string
-                    if dateNew is not None:
-                        editedDetails += f"{dateNew}|"
-                    if slotNew is not None:
-                        editedDetails += f"Slot {slotNew}|"
-                    if nameNew is not None:
-                        editedDetails += f"{nameNew}|"
-                    if email is not None:
-                        editedDetails += f"{email}|"
-                    if phone is not None:
-                        editedDetails += f"{phone}|"
-                    if pax is not None:
-                        editedDetails += f"{pax}"
-                    
+                    # Modify the specified reservation with the edited details
+                    if len(reservationFound) >= numUpdate:
+                        index_to_edit = numUpdate - 1
+                        reservation_to_edit = resDetails[index_to_edit].split("|")
+
+                        if dateNew is not None:
+                            reservation_to_edit[0] = str(dateNew)
+                        if slotNew is not None:
+                            reservation_to_edit[1] = f"Slot {slotNew}"
+                        if nameNew is not None:
+                            reservation_to_edit[2] = nameNew
+                        if emailNew is not None:
+                            reservation_to_edit[3] = emailNew
+                        if phoneNew is not None:
+                            reservation_to_edit[4] = phoneNew
+                        if paxNew is not None:
+                            reservation_to_edit[5] = str(paxNew)
+
+                    #Confirm details
                     final = True
                     while final:
-                        userConfirmation = input(f"Your edited reservation is {editedDetails}\nWould you like to confirm? [Y/N]: ").upper()
+                        userConfirmation = input("Your edited reservation is " + "|".join(reservation_to_edit) + "\nWould you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
                             final = True
                         elif userConfirmation == "Y":
-                            # Check if any changes were made
-                            if editedDetails:
-                                editedDetails += "\n"
-                                resDetails.append(editedDetails)
-                                print("Your reservation has been updated. Thank you!")
-                            else:
-                                print("No changes were made to the reservation.")
+                            resDetails[index_to_edit] = "|".join(reservation_to_edit)
+                            print("Reservation successfully updated!")
                             final = False
                     print("------------------------------------------------------------------------------------------------------")
                     editing = False
-
-                # Invalid selection
-                case _:
-                    print("Please try again with a valid response (1-7)\n")
-                    editing = True
 
     else:
         print(f"Reservation not found! Please check again")
