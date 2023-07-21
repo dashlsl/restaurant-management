@@ -412,8 +412,7 @@ def display_reservation():
     dashLine = "-" * len(headerRow)
 
     # Print headers and dash line
-    print(headerRow)
-    print(dashLine)
+    print(f"Reservations\n{dashLine}\n{headerRow}\n{dashLine}\n")
 
     # Iterate over each line in the reservation details text file
     for line in resDetails:
