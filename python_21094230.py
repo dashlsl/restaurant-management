@@ -452,8 +452,10 @@ def meal_recommendation():
     recommendationList = []
     # Generates recommendations up to the number the user has chosen
     while len(recommendationList) < numRecommendation:
+        # Generates a random item found in menuItems text file
         recommendation = random.choice(menuItems)
-        if recommendation not in recommendationList:  # Avoids duplicate recommendations
+        # Avoids duplicate recommendations
+        if recommendation not in recommendationList:
             recommendationList.append(recommendation)
             print(f"- {recommendation}", end="")
 
