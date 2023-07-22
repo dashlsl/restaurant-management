@@ -3,11 +3,11 @@ import datetime
 import os
 
 # Opens file containing reservation information
-with open("reservation_21094230.txt", "r") as f:
+with open("C:/Users/dashlsl/Documents/!Sunway/BSE/YEAR1/SEM2/Programming/Projects/Assignment/reservation_21094230.txt", "r") as f:
     resDetails = f.readlines()
 
 # Opens file containing list of menu items
-with open("menuItems_21094230.txt", "r") as g:
+with open("C:/Users/dashlsl/Documents/!Sunway/BSE/YEAR1/SEM2/Programming/Projects/Assignment/menuItems_21094230.txt", "r") as g:
     menuItems = g.readlines()
 
 
@@ -36,7 +36,7 @@ def main_program():
                 meal_recommendation()
             case 6:
                 print("Saving details and closing program... ")
-                with open("reservation_21094230.txt", "w") as rewrite:
+                with open("C:/Users/dashlsl/Documents/!Sunway/BSE/YEAR1/SEM2/Programming/Projects/Assignment/reservation_21094230.txt", "w") as rewrite:
                     rewrite.writelines(resDetails)
                 print("Details saved successfully, program closed!")
                 retry = False
@@ -299,8 +299,35 @@ def cancel_reservation():
 ########################################################################################################
 
 def edit_reservation():
+    '''NEEDS TO BE CHANGED TO MULTI SELECTION'''
     # Name input
     name_res = input("Enter your name for the reservation: ").upper()
+    # Date input
+    date_res = ""
+    while date_res == "":
+            try:
+                date_res = input("Enter your date for the reservation (YYYY-MM-DD): ")
+                # Checks if date is in the correct format
+                if date_res != datetime.datetime.strptime(date_res, "%Y-%m-%d").strftime('%Y-%m-%d'):
+                    raise ValueError
+            except ValueError:
+                print("\n"
+                      "Invalid date format, please try again")
+                date_res = ""
+            else:
+                date_res = datetime.datetime.strptime(date_res, "%Y-%m-%d").date()
+    # Slot input
+    slot_res = 0
+    while slot_res == 0:
+        print("[1] 12:00pm - 02:00pm"
+                "\n[2] 02:00pm - 04:00pm"
+                "\n[3] 06:00pm - 08:00pm"
+                "\n[4] 08:00pm - 10:00pm")
+        slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
+        if slot_res < 1 or slot_res > 4:
+            print("\nInvalid slot, please try again")
+            slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
+
     count = 0
     reservationFound = []
     numFound = []
@@ -335,16 +362,18 @@ def edit_reservation():
         # Convert the input to an integer
         numUpdate = int(numUpdate)
 
-        # Variables for editing reservation
-        dateNew = None
-        slotNew = None
-        nameNew = None
-        emailNew = None
-        phoneNew = None
-        paxNew = None
-
+        # User can select what they would like to edit
         editing = True
         while editing:
+
+            # Variables for editing reservation
+            dateNew = None
+            slotNew = None
+            nameNew = None
+            emailNew = None
+            phoneNew = None
+            paxNew = None
+
             print(f"What do you want to edit?"
                   f"\n[1] Date"
                   f"\n[2] Slot"
@@ -384,13 +413,19 @@ def edit_reservation():
                             dateToday = dateNew - dateOld
                             day = dateToday.days
                             
-                        # Ask for a confirmation input to make sure that the user wants to change to this new date
-                        # To validate the confirmation
-                        userConfirmation = input(f"Your new date is {dateNew}. Would you like to confirm? [Y/N]: ").upper()
-                        if userConfirmation == "N":
-                            checking = True
-                        elif userConfirmation == "Y":
-                            oldDate = False
+                        # Ask for a confirmation input
+                        confirmLoopDate = True
+                        while confirmLoopDate:
+                            userConfirmation = input(f"Your new date is {dateNew}. Would you like to confirm? [Y/N]: ").upper()
+                            if userConfirmation == "N":
+                                checking = True
+                                confirmLoopDate = False
+                            elif userConfirmation == "Y":
+                                oldDate = False
+                                confirmLoopDate = False
+                            else:
+                                print("Invalid input. Please select Y/N.")
+                                confirmLoopDate = True
 
                 # Change time slot
                 case 2:
@@ -448,52 +483,76 @@ def edit_reservation():
                                     print("Slot is available.")
                                     checking = False
 
-                        # Ask for a confirmation input to make sure that the user wants this slot
-                        # To validate the confirmation
-                        userConfirmation = input(f"Your new slot is {slotNew}. Would you like to confirm? [Y/N]: ").upper()
-                        if userConfirmation == "N":
-                            checking = True
-                        elif userConfirmation == "Y":
-                            oldSlot = False
+                        # Ask for a confirmation input
+                        confirmLoopSlot = True
+                        while confirmLoopSlot:
+                            userConfirmation = input(f"Your new slot is {slotNew}. Would you like to confirm? [Y/N]: ").upper()
+                            if userConfirmation == "N":
+                                checking = True
+                                confirmLoopSlot = False
+                            elif userConfirmation == "Y":
+                                oldSlot = False
+                                confirmLoopSlot = False
+                            else:
+                                print("Invalid input. Please select Y/N.")
+                                confirmLoopSlot = True
 
                 # Change name
                 case 3:
                     oldName = True
                     while oldName:
                         nameNew = input("Enter the new name for the reservation: ").upper()
-                        # Ask for a confirmation input to make sure that the user wants to change the reservation under this name
-                        # To validate the confirmation
-                        userConfirmation = input(f"The new name for this reservation is {nameNew}. Would you like to confirm? [Y/N]: ").upper()
-                        if userConfirmation == "N":
-                            oldName = True
-                        elif userConfirmation == "Y":
-                            oldName = False
+                        # Ask for a confirmation input
+                        confirmLoopName = True
+                        while confirmLoopName:
+                            userConfirmation = input(f"Your new name is {nameNew}. Would you like to confirm? [Y/N]: ").upper()
+                            if userConfirmation == "N":
+                                oldName = True
+                                confirmLoopName = False
+                            elif userConfirmation == "Y":
+                                oldName = False
+                                confirmLoopName = False
+                            else:
+                                print("Invalid input. Please select Y/N.")
+                                confirmLoopName = True
 
                 # Change email
                 case 4:
                     oldEmail = True
                     while oldEmail:
                         emailNew = input("Enter the email for the reservation: ").lower()
-                        # Ask for a confirmation input to make sure that the user wants to change to this new email address
-                        # To validate the confirmation
-                        userConfirmation = input(f"The new email address is {emailNew}. Would you like to confirm? [Y/N]: ").upper()
-                        if userConfirmation == "N":
-                            checking = True
-                        elif userConfirmation == "Y":
-                            oldEmail = False
+                        # Ask for a confirmation input
+                        confirmLoopEmail = True
+                        while confirmLoopEmail:
+                            userConfirmation = input(f"Your new email is {emailNew}. Would you like to confirm? [Y/N]: ").upper()
+                            if userConfirmation == "N":
+                                oldEmail = True
+                                confirmLoopEmail = False
+                            elif userConfirmation == "Y":
+                                oldEmail = False
+                                confirmLoopEmail = False
+                            else:
+                                print("Invalid input. Please select Y/N.")
+                                confirmLoopEmail = True
 
                 # Change phone number
                 case 5:
                     oldPhone = True
                     while oldPhone:
                         phoneNew = input("Enter the phone number for the reservation: ")
-                        # Ask for a confirmation input to make sure that the user wants to change to this new phone number
-                        # To validate the confirmation
-                        userConfirmation = input(f"The new phone number is {phoneNew}. Would you like to confirm? [Y/N]: ").upper()
-                        if userConfirmation == "N":
-                            checking = True
-                        elif userConfirmation == "Y":
-                            oldPhone = False
+                        # Ask for a confirmation input
+                        confirmLoopPhone = True
+                        while confirmLoopPhone:
+                            userConfirmation = input(f"Your new phone number is {phoneNew}. Would you like to confirm? [Y/N]: ").upper()
+                            if userConfirmation == "N":
+                                oldPhone = True
+                                confirmLoopPhone = False
+                            elif userConfirmation == "Y":
+                                oldPhone = False
+                                confirmLoopPhone = False
+                            else:
+                                print("Invalid input. Please select Y/N.")
+                                confirmLoopPhone = True
 
                 # Change number of pax
                 case 6:
@@ -505,13 +564,19 @@ def edit_reservation():
                             if paxNew < 1 or paxNew > 4:
                                 print("\nInvalid number of pax, please try again")
                                 paxNew = int(input("Enter number of pax (maximum 4): "))
-                        # Ask for a confirmation input to make sure that the user wants this number of pax
-                        # To validate the confirmation
-                        userConfirmation = input(f"The new number of pax is {paxNew}. Would you like to confirm? [Y/N]: ").upper()
-                        if userConfirmation == "N":
-                            checking = True
-                        elif userConfirmation == "Y":
-                            oldPax = False
+                        # Ask for a confirmation input
+                        confirmLoopPax = True
+                        while confirmLoopPax:
+                            userConfirmation = input(f"Your new pax number is {paxNew}. Would you like to confirm? [Y/N]: ").upper()
+                            if userConfirmation == "N":
+                                oldPax = True
+                                confirmLoopPax = False
+                            elif userConfirmation == "Y":
+                                oldPax = False
+                                confirmLoopPax = False
+                            else:
+                                print("Invalid input. Please select Y/N.")
+                                confirmLoopPax = True
 
                 # Exit editing
                 case 7:
@@ -538,14 +603,23 @@ def edit_reservation():
                     while final:
                         userConfirmation = input("Your edited reservation is " + "|".join(reservation_to_edit) + "\nWould you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
-                            final = True
+                            final = False
+                            editing = True
                         elif userConfirmation == "Y":
                             # To append the edited reservation details to the text file
                             resDetails[index_to_edit] = "|".join(reservation_to_edit)
                             print("Reservation successfully updated!")
                             final = False
+                            editing = False
+                        else:
+                            print("Invalid input. Please select Y/N.")
+                            final = True
                     print("-------------------------------------------------------------------------------------------")
-                    editing = False
+                
+                # Invalid selection
+                case _:
+                    print("Please try again with a valid response (1-7)\n")
+                    editing = True
 
     else:
         print(f"Reservation not found! Please check again")
