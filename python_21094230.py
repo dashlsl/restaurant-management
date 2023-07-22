@@ -255,11 +255,10 @@ def cancel_reservation():
                     print("No Result were found\n")
                 loop = False
 
+
             # If user wants to delete more than 1 reservation
             elif num > 1:
                 name_search = []
-                num_result = []
-                q = 0
 
                 # Ask for name reservations is under
                 for x in range(num):
@@ -296,6 +295,9 @@ def cancel_reservation():
                 else:
                     print("Invalid Input\n")
                 loop = False
+
+            else:
+                print("Invalid Input\n")
 
     # Ask user to try again in error happen
     except:
