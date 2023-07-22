@@ -442,7 +442,7 @@ def edit_reservation():
                                         if changer == 1:
                                             print("\n"
                                                   "Choosing a different date...")
-                                            retry = True  # Re-trigger the loops to enter date and slot again
+                                            oldSlot = True  # Re-trigger the loops to enter slot again
                                         elif changer == 2:
                                             print("\n"
                                                   "Choosing a different slot...")
@@ -472,7 +472,7 @@ def edit_reservation():
                         # To validate the confirmation
                         userConfirmation = input(f"The new name for this reservation is {nameNew}. Would you like to confirm? [Y/N]: ").upper()
                         if userConfirmation == "N":
-                            checking = True
+                            oldName = True
                         elif userConfirmation == "Y":
                             oldName = False
 
