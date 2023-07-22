@@ -187,14 +187,14 @@ def add_reservation():
 
 def cancel_reservation():
     try:
-        loop=True
+        loop = True
         while loop:
             print("**Cancel Reservation**")
-            num=int(input("How many reservation do you want to delete?: "))
+            num = int(input("How many reservation do you want to delete?: "))
             num_result = []
             q = 0
 
-            if num==1:
+            if num == 1:
                 name = input("Enter the name the reservation is under:").upper()
                 # Search file for reservation with that name
                 # to append new reservation into the list
@@ -219,7 +219,6 @@ def cancel_reservation():
                         # Delete Line which matches
                         del resDetails[num_result[0]]
                         print("Reservation Deleted.\n")
-
 
                     elif confirm == "N":
                         print("Reservation Not Deleted.\n")
@@ -254,17 +253,17 @@ def cancel_reservation():
 
                 else:
                     print("No Result were found\n")
-                loop=False
+                loop = False
 
             # If user wants to delete more than 1 reservation
-            elif num>1:
-                name_search=[]
-                num_result=[]
+            elif num > 1:
+                name_search = []
+                num_result = []
                 q = 0
 
                 # Ask for name reservations is under
-                for x in range (num):
-                    name=input("["+str(x+1)+"]Enter the name the reservation is under:").upper()
+                for x in range(num):
+                    name = input("["+str(x+1)+"]Enter the name the reservation is under:").upper()
                     name_search.append(name)
 
                 # Search for reservation
@@ -272,7 +271,7 @@ def cancel_reservation():
                     # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
                     temp = reservations.split("|")
                     # Is 2 because in the list 2 is the name of the reservation
-                    for i in range (len(name_search)):
+                    for i in range(len(name_search)):
                         if temp[2] == name_search[i]:
                             num_result.append(q)
                     q += 1
@@ -284,10 +283,10 @@ def cancel_reservation():
                     count += 1
 
                 # Ask for confirmation
-                confirm=input("Are you sure you want to delete these reservation? [Y/N]: ").upper()
+                confirm = input("Are you sure you want to delete these reservation? [Y/N]: ").upper()
                 if confirm == "Y":
                     # Delete Lines which matches
-                    for i in range (len(num_result)):
+                    for i in range(len(num_result)):
                         del resDetails[num_result[i]]
                     print("Reservations Deleted.\n")
 
@@ -296,7 +295,7 @@ def cancel_reservation():
 
                 else:
                     print("Invalid Input\n")
-                loop=False
+                loop = False
 
     # Ask user to try again in error happen
     except:
@@ -552,12 +551,13 @@ def edit_reservation():
                             resDetails[index_to_edit] = "|".join(reservation_to_edit)
                             print("Reservation successfully updated!")
                             final = False
-                    print("------------------------------------------------------------------------------------------------------")
+                    print("-------------------------------------------------------------------------------------------")
                     editing = False
 
     else:
         print(f"Reservation not found! Please check again")
-        
+        print("-------------------------------------------------------------------------------------------------------")
+
 
 ########################################################################################################
 
