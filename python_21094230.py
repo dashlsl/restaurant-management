@@ -93,10 +93,10 @@ def add_reservation():
             slot = int(input("Enter slot to reserve (1-4 only): "))
             if slot < 1 or slot > 4:
                 print("\nInvalid slot, please try again")
-                slot = int(input("Enter slot to reserve (1-4 only): "))
+                slot = 0
 
             # Displays people that made reservations for the chosen slot
-            clash = []
+            clash = []  # List for people with the same reservation
             for reservation in resDetails:
                 info = reservation.split("|")
                 if info[0] == str(date_res) and info[1][5] == str(slot):
