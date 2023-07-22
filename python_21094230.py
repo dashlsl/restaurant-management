@@ -319,7 +319,7 @@ def edit_reservation():
         # Splits the reservations item using "|" as the separator and assigns the resulting split parts
         reserve = reservations.split("|")
         # Check if user inputs are in resDetails
-        if (reserve[2] == name_res):
+        if reserve[2] == name_res:
             reservationFound.append(reserve)
             date, slot, name, email, phone, pax = reserve
             numFound.append(count)
@@ -354,17 +354,17 @@ def edit_reservation():
         editing = True
         while editing:
             print(f"What do you want to edit?"
-                f"\n[1] Date"
-                f"\n[2] Slot"
-                f"\n[3] Name"
-                f"\n[4] Email"
-                f"\n[5] Phone number"
-                f"\n[6] Number of pax"
-                f"\n[7] Exit")
+                  f"\n[1] Date"
+                  f"\n[2] Slot"
+                  f"\n[3] Name"
+                  f"\n[4] Email"
+                  f"\n[5] Phone number"
+                  f"\n[6] Number of pax"
+                  f"\n[7] Exit")
             selection = int(input("Enter your selection: "))
             print("")
             match selection:
-                #Change date
+                # Change date
                 case 1:
                     # To validate the date entered
                     oldDate = True
@@ -408,9 +408,9 @@ def edit_reservation():
                     while oldSlot:
                         while checking:
                             print("[1] 12.00pm - 2.00pm",
-                                "\n[2] 02.00pm - 04.00pm",
-                                "\n[3] 06.00pm - 08.00pm",
-                                "\n[4] 08.00pm - 10.00pm")
+                                  "\n[2] 02.00pm - 04.00pm",
+                                  "\n[3] 06.00pm - 08.00pm",
+                                  "\n[4] 08.00pm - 10.00pm")
                             slotNew = int(input("Choose a new slot: "))
                             # To make sure that input is within 1 and 4
                             if slotNew >= 5 or slotNew <= 0:
@@ -423,7 +423,7 @@ def edit_reservation():
                                     if info[0] == str(date) and info[1][5] == str(slot):
                                         clash.append(info)
                                 print("\n"
-                                    "This slot was reserved by: ")
+                                      "This slot was reserved by: ")
                                 if not clash:
                                     print("N/A")
                                 else:
@@ -434,23 +434,23 @@ def edit_reservation():
                                 # Checks if reservation slot is available or not
                                 if len(clash) >= 8:  # Slot full
                                     print("Slot can only accommodate 8 reservations, please choose a different slot"
-                                        "\n[1] Change date"
-                                        "\n[2] Change slot")
+                                          "\n[1] Change date"
+                                          "\n[2] Change slot")
                                     clash.clear()  # Resets the clash list
                                     changer = 0
                                     while changer == 0:
                                         changer = int(input("Enter your selection: "))
                                         if changer == 1:
                                             print("\n"
-                                                "Choosing a different date...")
+                                                  "Choosing a different date...")
                                             retry = True  # Re-trigger the loops to enter date and slot again
                                         elif changer == 2:
                                             print("\n"
-                                                "Choosing a different slot...")
+                                                  "Choosing a different slot...")
                                             slot = 0
                                         else:
                                             print("\n"
-                                                "Invalid selection, please try again")
+                                                  "Invalid selection, please try again")
                                             changer = 0
                                 else:  # Slot available
                                     print("Slot is available.")
@@ -541,7 +541,7 @@ def edit_reservation():
                         if paxNew is not None:
                             reservation_to_edit[5] = str(paxNew)
 
-                    #Confirm details
+                    # Confirm details
                     final = True
                     while final:
                         userConfirmation = input("Your edited reservation is " + "|".join(reservation_to_edit) + "\nWould you like to confirm? [Y/N]: ").upper()
