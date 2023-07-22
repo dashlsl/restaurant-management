@@ -190,20 +190,20 @@ def cancel_reservation():
         loop = True
         while loop:
             print("**Cancel Reservation**")
-            num = int(input("How many reservation do you want to delete?: "))
+            num = int(input("How many reservations do you want to delete?: "))
             num_result = []
             q = 0
 
             if num == 1:
-                name = input("Enter the name the reservation is under:").upper()
+                name = input("Enter the name the reservation is under: ").upper()
                 # Search file for reservation with that name
                 # to append new reservation into the list
 
                 for reservations in resDetails:
-                    # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
-                    temp = reservations.split("|")
+                    # The line splits the reservations item using | as the separator and assigns the resulting parts
+                    info = reservations.split("|")
                     # Is 2 because in the list 2 is the name of the reservation
-                    if temp[2] == name:
+                    if info[2] == name:
                         num_result.append(q)
                     q += 1
 
@@ -214,15 +214,13 @@ def cancel_reservation():
                     for i, index in enumerate(num_result):
                         print(f"[{1}] {resDetails[index]}")
                     # Ask for confirmation
-                    confirm = input("Are you sure you want to delete this reservation? [Y/N]").upper()
+                    confirm = input("Are you sure you want to delete this reservation? [Y/N] ").upper()
                     if confirm == "Y":
                         # Delete Line which matches
                         del resDetails[num_result[0]]
                         print("Reservation Deleted.\n")
-
                     elif confirm == "N":
                         print("Reservation Not Deleted.\n")
-
                     else:
                         print("Invalid Input\n")
 
@@ -244,17 +242,13 @@ def cancel_reservation():
                         # Delete Line which matches
                         del resDetails[num_result[choice-1]]
                         print("Reservation Deleted.\n")
-
                     elif confirm == "N":
                         print("Reservation Not Deleted.\n")
-
                     else:
                         print("Invalid Input\n")
-
                 else:
-                    print("No Result were found\n")
-                loop = False
-
+                    print("No results were found\n")
+                    loop = False
 
             # If user wants to delete more than 1 reservation
             elif num > 1:
@@ -268,10 +262,10 @@ def cancel_reservation():
                 # Search for reservation
                 for reservations in resDetails:
                     # The line splits the reservations item using the pipe symbol (|) as the separator and assigns the resulting split parts to the reservation variable
-                    temp = reservations.split("|")
+                    info = reservations.split("|")
                     # Is 2 because in the list 2 is the name of the reservation
                     for i in range(len(name_search)):
-                        if temp[2] == name_search[i]:
+                        if info[2] == name_search[i]:
                             num_result.append(q)
                     q += 1
 
@@ -287,15 +281,12 @@ def cancel_reservation():
                     # Delete Lines which matches
                     for i in range(len(num_result)):
                         del resDetails[num_result[i]]
-                    print("Reservations Deleted.\n")
-
+                    print("Reservations Deleted\n")
                 elif confirm == "N":
-                    print("Reservations Not Deleted.\n")
-
+                    print("Reservations Not Deleted\n")
                 else:
                     print("Invalid Input\n")
                 loop = False
-
             else:
                 print("Invalid Input\n")
 
