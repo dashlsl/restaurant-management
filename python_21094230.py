@@ -3,11 +3,11 @@ import datetime
 import os
 
 # Opens file containing reservation information
-with open("C:/Users/dashlsl/Documents/!Sunway/BSE/YEAR1/SEM2/Programming/Projects/Assignment/reservation_21094230.txt", "r") as f:
+with open("reservation_21094230.txt", "r") as f:
     resDetails = f.readlines()
 
 # Opens file containing list of menu items
-with open("C:/Users/dashlsl/Documents/!Sunway/BSE/YEAR1/SEM2/Programming/Projects/Assignment/menuItems_21094230.txt", "r") as g:
+with open("menuItems_21094230.txt", "r") as g:
     menuItems = g.readlines()
 
 
@@ -36,7 +36,7 @@ def main_program():
                 meal_recommendation()
             case 6:
                 print("Saving details and closing program... ")
-                with open("C:/Users/dashlsl/Documents/!Sunway/BSE/YEAR1/SEM2/Programming/Projects/Assignment/reservation_21094230.txt", "w") as rewrite:
+                with open("reservation_21094230.txt", "w") as rewrite:
                     rewrite.writelines(resDetails)
                 print("Details saved successfully, program closed!")
                 retry = False
