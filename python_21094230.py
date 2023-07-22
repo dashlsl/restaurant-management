@@ -124,7 +124,7 @@ def add_reservation():
                     pax = int(input("Enter number of pax (maximum 4): "))
                     if pax < 1 or pax > 4:
                         print("\nInvalid number of pax, please try again")
-                        pax = int(input("Enter number of pax (maximum 4): "))
+                        pax = 0
 
                 # Concatenating reservation info as a string
                 entry1 = f"{date_res}|Slot {slot}|{name}|{email}|{phone}|{pax}\n"
