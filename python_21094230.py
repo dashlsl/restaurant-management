@@ -111,27 +111,7 @@ def add_reservation():
                 print(" ")
 
             # Checks if reservation slot is available or not
-            if len(clash) >= 8:  # Slot full
-                print("Slot can only accommodate 8 reservations, please choose a different slot"
-                      "\n[1] Change date"
-                      "\n[2] Change slot")
-                clash.clear()  # Resets the clash list
-                changer = 0
-                while changer == 0:
-                    changer = int(input("Enter your selection: "))
-                    if changer == 1:
-                        print("\n"
-                              "Choosing a different date...")
-                        retry = True  # Re-trigger the loops to enter date and slot again
-                    elif changer == 2:
-                        print("\n"
-                              "Choosing a different slot...")
-                        slot = 0
-                    else:
-                        print("\n"
-                              "Invalid selection, please try again")
-                        changer = 0
-            else:  # Slot available
+            if len(clash) < 8:  # Slot available
                 print("Slot is available, you may start entering details"
                       "\n")
 
@@ -179,6 +159,26 @@ def add_reservation():
                         print("\n"
                               "Invalid selection, please try again")
                         new_res = 0
+            else:  # Slot unavailable
+                print("Slot can only accommodate 8 reservations, please choose a different slot"
+                      "\n[1] Change date"
+                      "\n[2] Change slot")
+                clash.clear()  # Resets the clash list
+                changer = 0
+                while changer == 0:
+                    changer = int(input("Enter your selection: "))
+                    if changer == 1:
+                        print("\n"
+                              "Choosing a different date...")
+                        retry = True  # Re-trigger the loops to enter date and slot again
+                    elif changer == 2:
+                        print("\n"
+                              "Choosing a different slot...")
+                        slot = 0
+                    else:
+                        print("\n"
+                              "Invalid selection, please try again")
+                        changer = 0
     print("-----------------------------------------------------------------------------------------------------------")
     return resDetails
 
