@@ -280,10 +280,10 @@ def cancel_reservation():
                 confirm = input("Are you sure you want to delete these reservation? [Y/N]: ").upper()
                 if confirm == "Y":
                     # Delete Lines which matches
-                    a=0
+                    a = 0
                     for i in range(len(num_result)):
                         del resDetails[num_result[i]-a]
-                        a+=1
+                        a += 1
                     print("Reservations Deleted\n")
                 elif confirm == "N":
                     print("Reservations Not Deleted\n")
@@ -302,69 +302,93 @@ def cancel_reservation():
 
 ########################################################################################################
 
+def search_reservation(resDetails):
+    # Get the search criteria from the user
+    print(f"**Update/Edit Reservation**")
+    print(f"How would you like to search for your reservation?"
+          f"\n[1] Date"
+          f"\n[2] Slot"
+          f"\n[3] Name")
+    selectionSearch = int(input("Enter your selection (1-3): "))
+
+    # Initialize search parameters
+    name_res = None
+    date_res = None
+    slot_res = None
+
+    match selectionSearch:
+        # Date search
+        case 1:
+            date_res = ""
+            while date_res == "":
+                    try:
+                        date_res = input("Enter your date for the reservation (YYYY-MM-DD): ")
+                        # Checks if date is in the correct format
+                        if date_res != datetime.datetime.strptime(date_res, "%Y-%m-%d").strftime('%Y-%m-%d'):
+                            raise ValueError
+                    except ValueError:
+                        print("\n"
+                            "Invalid date format, please try again")
+                        date_res = ""
+                    else:
+                        date_res = datetime.datetime.strptime(date_res, "%Y-%m-%d").date()
+
+        # Slot search
+        case 2:
+            slot_res = 0
+            while slot_res == 0:
+                print("[1] 12:00pm - 02:00pm"
+                        "\n[2] 02:00pm - 04:00pm"
+                        "\n[3] 06:00pm - 08:00pm"
+                        "\n[4] 08:00pm - 10:00pm")
+                slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
+                if slot_res < 1 or slot_res > 4:
+                    print("\nInvalid slot, please try again")
+                    slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
+
+        #Name search
+        case 3:
+            name_res = input("Enter your name for the reservation: ").upper()
+            
+        # Invalid input
+        case _:
+            print("Please try again with a valid response (1-4)\n")
+            '''Loop here aaaaaaaaaaa'''
+
+    # Find matching reservations based on the chosen criteria
+    matching_reservations = []
+    for reservation in resDetails:
+        info = reservation.split("|")
+        if (name_res is not None and info[2] == name_res) or \
+           (date_res is not None and info[0] == date_res) or \
+           (slot_res is not None and info[1][5] == str(slot_res)):
+            matching_reservations.append(reservation)
+
+    return matching_reservations, date_res, slot_res
+
 def edit_reservation():
-    '''NEEDS TO BE CHANGED TO MULTI SELECTION'''
-    # Name input
-    name_res = input("Enter your name for the reservation: ").upper()
-    # Date input
-    date_res = ""
-    while date_res == "":
-            try:
-                date_res = input("Enter your date for the reservation (YYYY-MM-DD): ")
-                # Checks if date is in the correct format
-                if date_res != datetime.datetime.strptime(date_res, "%Y-%m-%d").strftime('%Y-%m-%d'):
-                    raise ValueError
-            except ValueError:
-                print("\n"
-                      "Invalid date format, please try again")
-                date_res = ""
-            else:
-                date_res = datetime.datetime.strptime(date_res, "%Y-%m-%d").date()
-    # Slot input
-    slot_res = 0
-    while slot_res == 0:
-        print("[1] 12:00pm - 02:00pm"
-                "\n[2] 02:00pm - 04:00pm"
-                "\n[3] 06:00pm - 08:00pm"
-                "\n[4] 08:00pm - 10:00pm")
-        slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
-        if slot_res < 1 or slot_res > 4:
-            print("\nInvalid slot, please try again")
-            slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
+    # Call search_reservation() and unpack the returned values
+    matching_reservations, date, slot = search_reservation(resDetails)
 
-    count = 0
-    reservationFound = []
-    numFound = []
+    if matching_reservations:
+        # Display the matching reservations
+        print("Matching Reservations:")
+        for index, reservation in enumerate(matching_reservations, 1):
+            print(f"{index}: {reservation}")
 
-    # To append new reservation into the list
-    for reservations in resDetails:
-        count += 1
-        # Splits the reservations item using "|" as the separator and assigns the resulting split parts
-        reserve = reservations.split("|")
-        # Check if user inputs are in resDetails
-        if reserve[2] == name_res:
-            reservationFound.append(reserve)
-            date, slot, name, email, phone, pax = reserve
-            numFound.append(count)
-    
-    # To check if reservations found or not found
-    # To further edit the reservation if reservation is found
-    if len(reservationFound) >= 1:
-        print(f"Reservation found.")
-        # Enumerate() is used to access both the index and the item of a sequence simultaneously
-        # Display reservations
-        for count, numFound in enumerate(numFound):
-            print(f"[{count + 1}] {resDetails[numFound - 1]}")
-            count += 1
-
-        # To let the user choose the reservation they want to update by looking at the index
-        numUpdate = input("Enter the number of the reservation to update: ")
+        # Get the reservation number the user wants to update
+        numUpdate = input("Enter the number of the reservation you want to edit: ")
         # To check errors
-        while not numUpdate.isdigit() or not (1 <= int(numUpdate) <= len(reservationFound)):
+        while not numUpdate.isdigit() or not (1 <= int(numUpdate) <= len(matching_reservations)):
             print("Error, please input a valid number.")
             numUpdate = input("Enter the number of the reservation to update: ")
         # Convert the input to an integer
         numUpdate = int(numUpdate)
+
+        # Based on the numUpdate, find the corresponding reservation in matching_reservations
+        selected_reservation = matching_reservations[numUpdate - 1]
+        # Split the reservation details to get individual fields
+        date, slot, name, email, phone, pax = selected_reservation.split("|")
 
         # User can select what they would like to edit
         editing = True
@@ -585,7 +609,7 @@ def edit_reservation():
                 # Exit editing
                 case 7:
                     # Modify the specified reservation with the edited details
-                    if len(reservationFound) >= numUpdate:
+                    if len(matching_reservations) >= numUpdate:
                         index_to_edit = numUpdate - 1
                         reservation_to_edit = resDetails[index_to_edit].split("|")
                         # To append edited reservation details into a list
@@ -615,11 +639,13 @@ def edit_reservation():
                             print("Reservation successfully updated!")
                             final = False
                             editing = False
+                            # Return the updated reservations list and the chosen criteria
+                            return resDetails, date, slot
                         else:
                             print("Invalid input. Please select Y/N.")
                             final = True
                     print("-------------------------------------------------------------------------------------------")
-                
+
                 # Invalid selection
                 case _:
                     print("Please try again with a valid response (1-7)\n")
@@ -633,6 +659,7 @@ def edit_reservation():
 ########################################################################################################
 
 def display_reservation():
+    print(f"**Displaying Reservations**")
     # Define column widths and headers
     columnWidths = [12, 8, 20, 30, 12, 8]
     headers = ["Date", "Slot", "Name", "Email", "Phone", "Number of Pax"]
@@ -643,7 +670,7 @@ def display_reservation():
     dashLine = "-" * len(headerRow)
 
     # Print headers and dash line
-    print(f"Reservations\n{dashLine}\n{headerRow}\n{dashLine}\n")
+    print(f"{dashLine}\n{headerRow}\n{dashLine}\n")
 
     # Iterate over each line in the reservation details text file
     for line in resDetails:
@@ -667,6 +694,7 @@ def display_reservation():
 ########################################################################################################
 
 def meal_recommendation():
+    print(f"**Generating Meal Recommendations**")
     # Asks for number of recommendations user would like
     numRecommendation = int(input("How many menu recommendations do you want? (Choose 1-5): "))
     # Default number recommendation if input is not in range 1-5
