@@ -185,8 +185,8 @@ def add_reservation():
 ########################################################################################################
 
 def cancel_reservation():
-    try:
-        while True:
+    while (True):
+        try:
             print("**Cancel Reservation**")
             num = int(input("How many reservations do you want to delete?: "))
             num_result = []
@@ -295,8 +295,8 @@ def cancel_reservation():
                 break
 
     # Ask user to try again in error happen
-    except:
-        print("Invalid Input, Try Again.\n")
+        except:
+            print("Invalid Input, Try Again.\n")
     print("------------------------------------------------------------------------------------------------------")
 
 
