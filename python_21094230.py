@@ -187,8 +187,7 @@ def add_reservation():
 
 def cancel_reservation():
     try:
-        loop = True
-        while loop:
+        while True:
             print("**Cancel Reservation**")
             num = int(input("How many reservations do you want to delete?: "))
             num_result = []
@@ -223,6 +222,7 @@ def cancel_reservation():
                         print("Reservation Not Deleted.\n")
                     else:
                         print("Invalid Input\n")
+                    break
 
                 # If search found more than one results
                 elif len(num_result) > 1:
@@ -246,9 +246,10 @@ def cancel_reservation():
                         print("Reservation Not Deleted.\n")
                     else:
                         print("Invalid Input\n")
+                    break
                 else:
                     print("No results were found\n")
-                    loop = False
+                    break
 
             # If user wants to delete more than 1 reservation
             elif num > 1:
@@ -271,6 +272,7 @@ def cancel_reservation():
 
                 # Display Result found
                 count = 1
+                print("Search Found!")
                 for i, index in enumerate(num_result):
                     print("[" + str(count) + "] " + f" {resDetails[index]}")
                     count += 1
@@ -279,16 +281,19 @@ def cancel_reservation():
                 confirm = input("Are you sure you want to delete these reservation? [Y/N]: ").upper()
                 if confirm == "Y":
                     # Delete Lines which matches
+                    a=0
                     for i in range(len(num_result)):
-                        del resDetails[num_result[i]]
+                        del resDetails[num_result[i]-a]
+                        a+=1
                     print("Reservations Deleted\n")
                 elif confirm == "N":
                     print("Reservations Not Deleted\n")
                 else:
                     print("Invalid Input\n")
-                loop = False
+                break
             else:
                 print("Invalid Input\n")
+                break
 
     # Ask user to try again in error happen
     except:
