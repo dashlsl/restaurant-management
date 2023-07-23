@@ -1,6 +1,5 @@
 import random
 import datetime
-import os
 
 # Opens file containing reservation information
 with open("reservation_21094230.txt", "r") as f:
@@ -47,7 +46,7 @@ def main_program():
 ########################################################################################################
 
 def add_reservation():
-    print(f"Adding new reservation... "
+    print(f"**Adding Reservation**"
           f"\nNote: Reservation must be at least 5 days in advance")
 
     retry = True
