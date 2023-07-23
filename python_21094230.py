@@ -328,7 +328,7 @@ def search_reservation(resDetails):
                             raise ValueError
                     except ValueError:
                         print("\n"
-                            "Invalid date format, please try again")
+                              "Invalid date format, please try again")
                         date_res = ""
                     else:
                         date_res = datetime.datetime.strptime(date_res, "%Y-%m-%d").date()
@@ -338,15 +338,15 @@ def search_reservation(resDetails):
             slot_res = 0
             while slot_res == 0:
                 print("[1] 12:00pm - 02:00pm"
-                        "\n[2] 02:00pm - 04:00pm"
-                        "\n[3] 06:00pm - 08:00pm"
-                        "\n[4] 08:00pm - 10:00pm")
+                      "\n[2] 02:00pm - 04:00pm"
+                      "\n[3] 06:00pm - 08:00pm"
+                      "\n[4] 08:00pm - 10:00pm")
                 slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
                 if slot_res < 1 or slot_res > 4:
                     print("\nInvalid slot, please try again")
                     slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
 
-        #Name search
+        # Name search
         case 3:
             name_res = input("Enter your name for the reservation: ").upper()
             
@@ -365,6 +365,9 @@ def search_reservation(resDetails):
             matching_reservations.append(reservation)
 
     return matching_reservations, date_res, slot_res
+
+
+########################################################################################################
 
 def edit_reservation():
     # Call search_reservation() and unpack the returned values
