@@ -306,7 +306,7 @@ def search_reservation(resDetails):
     searchLoop = True
     while searchLoop:
         # Get the search criteria from the user
-        print(f"**Update/Edit Reservation**")
+        print(f"Searching Reservation...")
         print(f"How would you like to search for your reservation?"
             f"\n[1] Date"
             f"\n[2] Slot"
@@ -378,6 +378,7 @@ def search_reservation(resDetails):
 ########################################################################################################
 
 def edit_reservation():
+    print(f"**Update/Edit Reservation**")
     # Call search_reservation() and unpack the returned values
     matching_reservations, date, slot = search_reservation(resDetails)
 
