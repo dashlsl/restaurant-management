@@ -303,66 +303,74 @@ def cancel_reservation():
 ########################################################################################################
 
 def search_reservation(resDetails):
-    # Get the search criteria from the user
-    print(f"**Update/Edit Reservation**")
-    print(f"How would you like to search for your reservation?"
-          f"\n[1] Date"
-          f"\n[2] Slot"
-          f"\n[3] Name")
-    selectionSearch = int(input("Enter your selection (1-3): "))
+    searchLoop = True
+    while searchLoop:
+        # Get the search criteria from the user
+        print(f"**Update/Edit Reservation**")
+        print(f"How would you like to search for your reservation?"
+            f"\n[1] Date"
+            f"\n[2] Slot"
+            f"\n[3] Name")
+        selectionSearch = int(input("Enter your selection: "))
 
-    # Initialize search parameters
-    name_res = None
-    date_res = None
-    slot_res = None
+        # Initialize search variables
+        name_res = None
+        date_res = None
+        slot_res = None
 
-    match selectionSearch:
-        # Date search
-        case 1:
-            date_res = ""
-            while date_res == "":
+        match selectionSearch:
+            # Date search
+            case 1:
+                while date_res is None:
                     try:
                         date_res = input("Enter your date for the reservation (YYYY-MM-DD): ")
                         # Checks if date is in the correct format
                         if date_res != datetime.datetime.strptime(date_res, "%Y-%m-%d").strftime('%Y-%m-%d'):
                             raise ValueError
                     except ValueError:
-                        print("\n"
-                              "Invalid date format, please try again")
-                        date_res = ""
+                        print("Invalid date format, please try again!")
+                        date_res = None
                     else:
                         date_res = datetime.datetime.strptime(date_res, "%Y-%m-%d").date()
+                searchLoop = False
 
-        # Slot search
-        case 2:
-            slot_res = 0
-            while slot_res == 0:
-                print("[1] 12:00pm - 02:00pm"
-                      "\n[2] 02:00pm - 04:00pm"
-                      "\n[3] 06:00pm - 08:00pm"
-                      "\n[4] 08:00pm - 10:00pm")
-                slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
-                if slot_res < 1 or slot_res > 4:
-                    print("\nInvalid slot, please try again")
+            # Slot search
+            case 2:
+                while slot_res is None:
+                    print("[1] 12:00pm - 02:00pm"
+                        "\n[2] 02:00pm - 04:00pm"
+                        "\n[3] 06:00pm - 08:00pm"
+                        "\n[4] 08:00pm - 10:00pm")
                     slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
+                    if slot_res < 1 or slot_res > 4:
+                        print("\nInvalid slot, please try again")
+                        slot_res = None
+                searchLoop = False
 
-        # Name search
-        case 3:
-            name_res = input("Enter your name for the reservation: ").upper()
-            
-        # Invalid input
-        case _:
-            print("Please try again with a valid response (1-4)\n")
-            '''Loop here aaaaaaaaaaa'''
+            # Name search
+            case 3:
+                name_res = input("Enter your name for the reservation: ").upper()
+                searchLoop = False
+
+            # Invalid input
+            case _:
+                print("Please try again with a valid response (1-4)\n")
+                searchLoop = True
 
     # Find matching reservations based on the chosen criteria
     matching_reservations = []
     for reservation in resDetails:
         info = reservation.split("|")
         if (name_res is not None and info[2] == name_res) or \
-           (date_res is not None and info[0] == date_res) or \
+           (date_res is not None and datetime.datetime.strptime(info[0], "%Y-%m-%d").date() == date_res) or \
            (slot_res is not None and info[1][5] == str(slot_res)):
             matching_reservations.append(reservation)
+
+    # Display the matching reservations
+    print(str(len(matching_reservations))+" Result(s) Were Found!")
+    print("Matching Reservations:")
+    for index, reservation in enumerate(matching_reservations, 1):
+        print(f"[{index}] {reservation}")
 
     return matching_reservations, date_res, slot_res
 
@@ -374,11 +382,6 @@ def edit_reservation():
     matching_reservations, date, slot = search_reservation(resDetails)
 
     if matching_reservations:
-        # Display the matching reservations
-        print("Matching Reservations:")
-        for index, reservation in enumerate(matching_reservations, 1):
-            print(f"{index}: {reservation}")
-
         # Get the reservation number the user wants to update
         numUpdate = input("Enter the number of the reservation you want to edit: ")
         # To check errors
@@ -415,6 +418,7 @@ def edit_reservation():
                   f"\n[7] Exit")
             selection = int(input("Enter your selection: "))
             print("")
+
             match selection:
                 # Change date
                 case 1:
@@ -428,35 +432,32 @@ def edit_reservation():
                                 if dateReplace != datetime.datetime.strptime(dateReplace, "%Y-%m-%d").strftime('%Y-%m-%d'):
                                     raise ValueError
                             except ValueError:
-                                print(f"Invalid input, please try again!")
+                                print(f"Invalid date format, please try again!")
                             else:
+                                dateNow = datetime.datetime.now().date()
                                 dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
-                                dateOld = datetime.datetime.strptime(date, '%Y-%m-%d').date()
-                                dateToday = dateNew - dateOld
-                                day = dateToday.days
-                                checking = False
-                        
-                        # To let user change the date of reservations because the date chosen is >5 days or the user went back in time
-                        while day >= 5 or day < 0:
-                            print(f"Sorry but reservation needs to be booked 5 days in advance or the date is invalid.\n")
-                            dateReplace = input(f"Select another date (YYYY-MM-DD): ")
-                            dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
-                            dateToday = dateNew - dateOld
-                            day = dateToday.days
-                            
-                        # Ask for a confirmation input
-                        confirmLoopDate = True
-                        while confirmLoopDate:
-                            userConfirmation = input(f"Your new date is {dateNew}. Would you like to confirm? [Y/N]: ").upper()
-                            if userConfirmation == "N":
-                                checking = True
-                                confirmLoopDate = False
-                            elif userConfirmation == "Y":
-                                oldDate = False
-                                confirmLoopDate = False
-                            else:
-                                print("Invalid input. Please select Y/N.")
-                                confirmLoopDate = True
+                                daysBetween = dateNew - dateNow
+                                # Checks whether reservation is at least 5 days in advance
+                                if daysBetween.days <= 5:
+                                    print(f"Sorry but reservation needs to be booked 5 days in advance or the date is invalid.\n")
+                                    checking = True
+                                else:
+                                    checking = False
+
+                            # Ask for a confirmation input
+                            confirmLoopDate = True
+                            while confirmLoopDate:
+                                userConfirmation = input(f"Your new date is {dateNew}. Would you like to confirm? [Y/N]: ").upper()
+                                if userConfirmation == "N":
+                                    checking = True
+                                    confirmLoopDate = False
+                                elif userConfirmation == "Y":
+                                    resDetails[index_to_edit] = "|".join(reservation_to_edit)
+                                    oldDate = False
+                                    confirmLoopDate = False
+                                else:
+                                    print("Invalid input. Please select Y/N.")
+                                    confirmLoopDate = True
 
                 # Change time slot
                 case 2:
@@ -478,7 +479,7 @@ def edit_reservation():
                                 clash = []
                                 for reservation in resDetails:
                                     info = reservation.split("|")
-                                    if info[0] == str(date) and info[1][5] == str(slot):
+                                    if info[0] == str(date) and info[1][5] == str(slotNew):
                                         clash.append(info)
                                 print("\n"
                                       "This slot was reserved by: ")
@@ -499,13 +500,30 @@ def edit_reservation():
                                     while changer == 0:
                                         changer = int(input("Enter your selection: "))
                                         if changer == 1:
-                                            print("\n"
-                                                  "Choosing a different date...")
-                                            oldSlot = True  # Re-trigger the loops to enter slot again
+                                            dateChanger = True
+                                            while dateChanger:
+                                                print("\n"
+                                                    "Choosing a different date...")
+                                                try:
+                                                    dateReplace = input("Enter the new date for the chosen reservation (YYYY-MM-DD): ")
+                                                    if dateReplace != datetime.datetime.strptime(dateReplace, "%Y-%m-%d").strftime('%Y-%m-%d'):
+                                                        raise ValueError
+                                                except ValueError:
+                                                    print(f"Invalid date format, please try again!")
+                                                else:
+                                                    dateNow = datetime.datetime.now().date()
+                                                    dateNew = datetime.datetime.strptime(dateReplace, '%Y-%m-%d').date()
+                                                    daysBetween = dateNew - dateNow
+                                                    # Checks whether reservation is at least 5 days in advance
+                                                    if daysBetween.days <= 5:
+                                                        print(f"Sorry but reservation needs to be booked 5 days in advance or the date is invalid.\n")
+                                                        dateChanger = True
+                                                    else:
+                                                        dateChanger = False
                                         elif changer == 2:
                                             print("\n"
                                                   "Choosing a different slot...")
-                                            slot = 0
+                                            checking = True
                                         else:
                                             print("\n"
                                                   "Invalid selection, please try again")
@@ -522,6 +540,7 @@ def edit_reservation():
                                 checking = True
                                 confirmLoopSlot = False
                             elif userConfirmation == "Y":
+                                resDetails[index_to_edit] = "|".join(reservation_to_edit)
                                 oldSlot = False
                                 confirmLoopSlot = False
                             else:
