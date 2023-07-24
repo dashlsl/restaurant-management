@@ -185,7 +185,7 @@ def add_reservation():
 ########################################################################################################
 
 def cancel_reservation():
-    while (True):
+    while True:
         try:
             print("**Cancel Reservation**")
             num = int(input("How many reservations do you want to delete?: "))
@@ -308,9 +308,9 @@ def search_reservation(resDetails):
         # Get the search criteria from the user
         print(f"Searching Reservation...")
         print(f"How would you like to search for your reservation?"
-            f"\n[1] Date"
-            f"\n[2] Slot"
-            f"\n[3] Name")
+              f"\n[1] Date"
+              f"\n[2] Slot"
+              f"\n[3] Name")
         selectionSearch = int(input("Enter your selection: "))
 
         # Initialize search variables
@@ -338,9 +338,9 @@ def search_reservation(resDetails):
             case 2:
                 while slot_res is None:
                     print("[1] 12:00pm - 02:00pm"
-                        "\n[2] 02:00pm - 04:00pm"
-                        "\n[3] 06:00pm - 08:00pm"
-                        "\n[4] 08:00pm - 10:00pm")
+                          "\n[2] 02:00pm - 04:00pm"
+                          "\n[3] 06:00pm - 08:00pm"
+                          "\n[4] 08:00pm - 10:00pm")
                     slot_res = int(input("Enter your slot for the reservation (Slot X?): "))
                     if slot_res < 1 or slot_res > 4:
                         print("\nInvalid slot, please try again")
@@ -504,7 +504,7 @@ def edit_reservation():
                                             dateChanger = True
                                             while dateChanger:
                                                 print("\n"
-                                                    "Choosing a different date...")
+                                                      "Choosing a different date...")
                                                 try:
                                                     dateReplace = input("Enter the new date for the chosen reservation (YYYY-MM-DD): ")
                                                     if dateReplace != datetime.datetime.strptime(dateReplace, "%Y-%m-%d").strftime('%Y-%m-%d'):
